@@ -1,0 +1,11 @@
+{
+  "events": [
+    {
+      "date": "2026-07-31",
+      "law_id": "init",
+      "law_name": "系统初始化",
+      "event": "HR 法规知识库初始化，开始监控 7 部核心法律法规。",
+      "url": "https://hosamzj.github.io/hr-compliance/"
+    }
+  ]
+}

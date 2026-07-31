@@ -1,0 +1,98 @@
+{
+  "last_updated": "2026-07-31",
+  "check_schedule": "每月 1 日 09:00",
+  "notification_email": "sam.huo@te.com",
+  "laws": [
+    {
+      "id": "labor-law",
+      "name": "中华人民共和国劳动法",
+      "issuer": "全国人民代表大会常务委员会",
+      "effective_date": "1995-01-01",
+      "description": "调整劳动关系、保护劳动者合法权益的基本法律，涵盖劳动合同、工作时间、工资、劳动安全卫生、社会保险福利、劳动争议等。",
+      "url": "https://flk.npc.gov.cn/detail2.html?ZmY4MDgxODE1Yzk1ZTZkNDAxYzk5NmY1NmVlNzIxNmM%3D",
+      "source_type": "flk.npc.gov.cn",
+      "category": "基本劳动制度",
+      "status": "ok",
+      "last_checked": "2026-07-31",
+      "last_changed": null
+    },
+    {
+      "id": "labor-contract-law",
+      "name": "中华人民共和国劳动合同法",
+      "issuer": "全国人民代表大会常务委员会",
+      "effective_date": "2008-01-01",
+      "description": "规范劳动合同订立、履行、变更、解除和终止，明确经济补偿、劳务派遣、非全日制用工等规则。",
+      "url": "https://flk.npc.gov.cn/detail2.html?ZmY4MDgxODE1Yzk1ZTZkNDAxYzk5NmY1NmVlNzIxNmM%3D",
+      "source_type": "flk.npc.gov.cn",
+      "category": "劳动合同",
+      "status": "ok",
+      "last_checked": "2026-07-31",
+      "last_changed": null
+    },
+    {
+      "id": "social-insurance-law",
+      "name": "中华人民共和国社会保险法",
+      "issuer": "全国人民代表大会常务委员会",
+      "effective_date": "2011-07-01",
+      "description": "规范基本养老保险、基本医疗保险、工伤保险、失业保险、生育保险等社会保险制度。",
+      "url": "https://flk.npc.gov.cn/detail2.html?ZmY4MDgxODE1Yzk1ZTZkNDAxYzk5NmY1NmVlNzIxNmM%3D",
+      "source_type": "flk.npc.gov.cn",
+      "category": "社会保险",
+      "status": "ok",
+      "last_checked": "2026-07-31",
+      "last_changed": null
+    },
+    {
+      "id": "employment-promotion-law",
+      "name": "中华人民共和国就业促进法",
+      "issuer": "全国人民代表大会常务委员会",
+      "effective_date": "2008-01-01",
+      "description": "促进就业、规范就业服务与管理、保障公平就业、鼓励创业带动就业。",
+      "url": "https://flk.npc.gov.cn/detail2.html?ZmY4MDgxODE1Yzk1ZTZkNDAxYzk5NmY1NmVlNzIxNmM%3D",
+      "source_type": "flk.npc.gov.cn",
+      "category": "就业促进",
+      "status": "ok",
+      "last_checked": "2026-07-31",
+      "last_changed": null
+    },
+    {
+      "id": "labor-dispute-law",
+      "name": "中华人民共和国劳动争议调解仲裁法",
+      "issuer": "全国人民代表大会常务委员会",
+      "effective_date": "2008-05-01",
+      "description": "规范劳动争议调解、仲裁程序，明确劳动仲裁时效、管辖、裁决效力等。",
+      "url": "https://flk.npc.gov.cn/detail2.html?ZmY4MDgxODE1Yzk1ZTZkNDAxYzk5NmY1NmVlNzIxNmM%3D",
+      "source_type": "flk.npc.gov.cn",
+      "category": "劳动争议",
+      "status": "ok",
+      "last_checked": "2026-07-31",
+      "last_changed": null
+    },
+    {
+      "id": "work-injury-regulation",
+      "name": "工伤保险条例",
+      "issuer": "国务院",
+      "effective_date": "2004-01-01",
+      "description": "规定工伤认定、劳动能力鉴定、工伤保险待遇、用人单位责任等。",
+      "url": "https://www.gov.cn/zhengce/content/2004-03/01/content_6162.htm",
+      "source_type": "gov.cn",
+      "category": "社会保险",
+      "status": "ok",
+      "last_checked": "2026-07-31",
+      "last_changed": null
+    },
+    {
+      "id": "annual-leave-regulation",
+      "name": "职工带薪年休假条例",
+      "issuer": "国务院",
+      "effective_date": "2008-01-01",
+      "description": "规定职工带薪年休假天数、未休年假工资报酬、监督与争议处理。",
+      "url": "https://www.gov.cn/zhengce/content/2008-01/21/content_8708.htm",
+      "source_type": "gov.cn",
+      "category": "工时休假",
+      "status": "ok",
+      "last_checked": "2026-07-31",
+      "last_changed": null
+    }
+  ]
+}
