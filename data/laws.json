@@ -51,7 +51,7 @@
       "url": "https://flk.npc.gov.cn/detail2.html?ZmY4MDgxODE1Yzk1ZTZkNDAxYzk5NmY1NmVlNzIxNmM%3D",
       "source_type": "flk.npc.gov.cn",
       "category": "就业促进",
-      "status": "ok",
+      "status": "error",
       "last_checked": "2026-07-31",
       "last_changed": null
     },
@@ -77,7 +77,7 @@
       "url": "https://www.gov.cn/zhengce/content/2004-03/01/content_6162.htm",
       "source_type": "gov.cn",
       "category": "社会保险",
-      "status": "ok",
+      "status": "error",
       "last_checked": "2026-07-31",
       "last_changed": null
     },
@@ -90,7 +90,7 @@
       "url": "https://www.gov.cn/zhengce/content/2008-01/21/content_8708.htm",
       "source_type": "gov.cn",
       "category": "工时休假",
-      "status": "ok",
+      "status": "error",
       "last_checked": "2026-07-31",
       "last_changed": null
     }
