@@ -1,14 +1,23 @@
 {
   "labor-law": {
-    "hash": "68c7221a288377e6"
+    "hash": "67f62a56c5414dd3"
   },
   "labor-contract-law": {
-    "hash": "68c7221a288377e6"
+    "hash": "67f62a56c5414dd3"
   },
   "social-insurance-law": {
-    "hash": "68c7221a288377e6"
+    "hash": "67f62a56c5414dd3"
+  },
+  "employment-promotion-law": {
+    "hash": "67f62a56c5414dd3"
   },
   "labor-dispute-law": {
-    "hash": "68c7221a288377e6"
+    "hash": "67f62a56c5414dd3"
+  },
+  "work-injury-regulation": {
+    "hash": "67f62a56c5414dd3"
+  },
+  "annual-leave-regulation": {
+    "hash": "67f62a56c5414dd3"
   }
 }

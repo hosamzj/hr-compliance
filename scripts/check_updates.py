@@ -113,8 +113,16 @@ def git_push_changes(message: str):
 def send_email(subject: str, body: str, to: str = "sam.huo@te.com"):
     """通过 Himalaya 发送邮件通知"""
     try:
+        eml = f"""Subject: {subject}
+From: hosamzj@163.com
+To: {to}
+Content-Type: text/plain; charset=utf-8
+
+{body}
+"""
         result = subprocess.run(
-            ["himalaya", "message", "write", "-H", f"To:{to}", "-H", f"Subject:{subject}", body],
+            ["himalaya", "smtp", "send", "-f", "hosamzj@163.com", "-t", to],
+            input=eml,
             cwd=REPO_DIR,
             capture_output=True,
             text=True,
@@ -142,44 +150,60 @@ def main():
     updated_laws = []
     error_laws = []
 
+    # 按 URL 去重，避免相同 URL 被重复抓取和重复报警
+    url_to_laws = {}
     for law in laws_data.get("laws", []):
         url = law.get("url")
-        law_id = law.get("id")
         if not url:
             continue
+        url_to_laws.setdefault(url, []).append(law)
 
-        print(f"正在检查：{law['name']} ...")
+    url_results = {}
+    for url, laws in url_to_laws.items():
+        names = "、".join(l["name"] for l in laws)
+        print(f"正在检查：{names} ...")
         text, ok = fetch_content(url)
-        law["last_checked"] = today
+        for law in laws:
+            law["last_checked"] = today
 
         if not ok:
-            law["status"] = "error"
-            error_laws.append((law["name"], text[:200]))
+            for law in laws:
+                law["status"] = "error"
+                error_laws.append((law["name"], text[:200]))
             print(f"  检查失败：{text[:100]}")
             continue
 
         current_hash = content_hash(text)
-        previous_hash = state.get(law_id, {}).get("hash")
-        state.setdefault(law_id, {})["hash"] = current_hash
+        url_results[url] = current_hash
+
+        # 只要有一个 law 之前检查过这个 URL，就以该 URL 的上次 hash 为准
+        previous_hashes = [state.get(law.get("id"), {}).get("hash") for law in laws if law.get("id")]
+        previous_hash = previous_hashes[0] if previous_hashes else None
+
+        for law in laws:
+            law_id = law.get("id")
+            if law_id:
+                state.setdefault(law_id, {})["hash"] = current_hash
 
         if previous_hash and current_hash != previous_hash:
-            law["status"] = "updated"
-            law["last_changed"] = today
-            updated_laws.append(law)
-            history["events"].insert(0, {
-                "date": today,
-                "law_id": law_id,
-                "law_name": law["name"],
-                "event": "页面内容发生变化，可能有法规更新或修订",
-                "url": url,
-            })
-            print(f"  ⚠️ 检测到更新")
+            for law in laws:
+                law["status"] = "updated"
+                law["last_changed"] = today
+                updated_laws.append(law)
+                history["events"].insert(0, {
+                    "date": today,
+                    "law_id": law.get("id"),
+                    "law_name": law["name"],
+                    "event": "页面内容发生变化，可能有法规更新或修订",
+                    "url": url,
+                })
+            print(f"  ⚠️ 检测到更新（影响 {len(laws)} 部法规）")
         else:
-            if law.get("status") == "updated":
-                # 如果上次标记为 updated，且本次没有新变化，则恢复 ok
-                law["status"] = "ok"
-            else:
-                law["status"] = law.get("status") or "ok"
+            for law in laws:
+                if law.get("status") == "updated":
+                    law["status"] = "ok"
+                else:
+                    law["status"] = law.get("status") or "ok"
             print(f"  无更新")
 
     laws_data["last_updated"] = today
