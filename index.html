@@ -440,7 +440,7 @@
             const html = ['<ul>'];
             recentEvents.forEach(event => {
                 const name = event.law_name || '系统';
-                const summary = event.change_summary ? ` — ${escapeHtml(event.change_summary)}` : '';
+                const summary = event.change_summary ? ` — ${escapeHtml(event.change_summary)}` : (event.event ? ` — ${escapeHtml(event.event)}` : '');
                 html.push(`<li><span class="law-title">${escapeHtml(name)}</span>${summary} <span style="color:var(--text-muted);font-size:12px;">(${event.date})</span></li>`);
             });
             html.push('</ul>');
