@@ -55,6 +55,9 @@ def fetch_content(url: str) -> tuple[str, bool]:
     try:
         resp = requests.get(url, headers=HEADERS, timeout=30, allow_redirects=True)
         resp.raise_for_status()
+        # 修正编码：requests 可能将中文页面误识别为 ISO-8859-1，优先按 UTF-8 解码
+        if resp.encoding and resp.encoding.lower() in ("iso-8859-1", "latin-1"):
+            resp.encoding = "utf-8"
         text = resp.text
         # 去除 HTML 标签、空白、JS 变量等不稳定内容，只保留可读的文本和关键元数据
         text = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", text, flags=re.IGNORECASE)
