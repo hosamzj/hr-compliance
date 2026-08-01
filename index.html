@@ -226,6 +226,56 @@
             font-size: 14px;
             flex: 1;
         }
+        .changelog {
+            background: rgba(201, 100, 66, 0.08);
+            border-left: 3px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 0 10px 10px 0;
+            margin-top: 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .changelog-label {
+            color: var(--accent-light);
+            font-weight: 600;
+            margin-right: 6px;
+        }
+        .update-summary {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        .update-summary h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .update-summary ul {
+            list-style: none;
+        }
+        .update-summary li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .update-summary li:last-child {
+            border-bottom: none;
+        }
+        .update-summary .law-title {
+            color: var(--text);
+            font-weight: 500;
+        }
+        .update-summary .empty {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
         .footer {
             text-align: center;
             padding: 40px 24px;
@@ -272,6 +322,11 @@
             <span>📧 邮件订阅通知</span>
             <span class="status-badge status-ok">● 监控运行中</span>
         </div>
+
+        <section class="update-summary" id="update-summary" style="display: none;">
+            <h3><span>🆕</span> 本期更新摘要</h3>
+            <div id="update-summary-content"></div>
+        </section>
 
         <section class="laws-section">
             <h2 class="section-title">
@@ -320,6 +375,7 @@
                     card.className = 'law-card';
                     const statusClass = law.status === 'updated' ? 'status-update' : (law.status === 'error' ? 'status-error' : 'status-ok');
                     const statusText = law.status === 'updated' ? '有更新' : (law.status === 'error' ? '检查失败' : '无更新');
+                    const changelogHtml = law.change_summary ? `<div class="changelog"><span class="changelog-label">更新说明：</span>${escapeHtml(law.change_summary)}</div>` : '';
                     card.innerHTML = `
                         <div class="law-card-header">
                             <div>
@@ -329,6 +385,7 @@
                             <span class="status-badge ${statusClass}">● ${statusText}</span>
                         </div>
                         <p>${law.description}</p>
+                        ${changelogHtml}
                         <div class="law-card-footer">
                             <a href="${law.url}" target="_blank" rel="noopener">查看官方来源 →</a>
                             <span class="law-meta">上次检查：${law.last_checked || '未检查'}</span>
@@ -343,17 +400,51 @@
                 (historyData.events || []).forEach(event => {
                     const item = document.createElement('div');
                     item.className = 'history-item';
+                    const summary = event.change_summary ? `<br><span class="changelog" style="display:inline-block;margin-top:6px;padding:6px 10px;"><span class="changelog-label">更新说明：</span>${escapeHtml(event.change_summary)}</span>` : '';
                     item.innerHTML = `
                         <span class="date">${event.date}</span>
-                        <span class="event">${event.event}</span>
+                        <span class="event">${event.event}${summary}</span>
                     `;
                     historyList.appendChild(item);
                 });
+
+                // Render top update summary for recent changes
+                renderUpdateSummary(lawsData.laws, historyData.events || []);
             } catch (err) {
                 document.getElementById('laws-grid').innerHTML = '<p style="color:var(--text-secondary)">加载法规数据失败，请稍后刷新。</p>';
                 console.error(err);
             }
         }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function renderUpdateSummary(laws, events) {
+            const container = document.getElementById('update-summary');
+            const content = document.getElementById('update-summary-content');
+            const recentEvents = events.slice(0, 7);
+            if (recentEvents.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            const html = ['<ul>'];
+            recentEvents.forEach(event => {
+                const name = event.law_name || '系统';
+                const summary = event.change_summary ? ` — ${escapeHtml(event.change_summary)}` : '';
+                html.push(`<li><span class="law-title">${escapeHtml(name)}</span>${summary} <span style="color:var(--text-muted);font-size:12px;">(${event.date})</span></li>`);
+            });
+            html.push('</ul>');
+            content.innerHTML = html.join('');
+            container.style.display = 'block';
+        }
+
         loadData();
     </script>
 </body>

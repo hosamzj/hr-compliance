@@ -20,6 +20,7 @@ import re
 import subprocess
 import sys
 import time
+import difflib
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -67,6 +68,50 @@ def fetch_content(url: str) -> tuple[str, bool]:
 
 def content_hash(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8", errors="ignore")).hexdigest()[:16]
+
+
+def compute_change_summary(old_text: str, new_text: str, url: str = "") -> str:
+    """基于两次抓取的文本差异生成简要更新说明。"""
+    if not old_text:
+        return "首次建立基准版本，后续将持续比对变化。"
+
+    # 使用 difflib 找出新增或修改的文本片段
+    sm = difflib.SequenceMatcher(None, old_text, new_text)
+    changed_snippets = []
+    for tag, _i1, _i2, j1, j2 in sm.get_opcodes():
+        if tag in ("replace", "insert", "delete"):
+            snippet = new_text[j1:j2].strip()
+            # 过滤过短或纯标点的片段
+            if len(snippet) >= 6 and not re.match(r"^[\s\W]+$", snippet):
+                # 去除可能的 HTML 实体残留和过长片段
+                snippet = re.sub(r"[<>'&;]+", "", snippet)
+                changed_snippets.append(snippet)
+
+    if not changed_snippets:
+        return "页面内容哈希发生变化，但未提取到可读文本差异。"
+
+    # 去重并取前几条
+    seen = set()
+    unique = []
+    for s in changed_snippets:
+        key = s[:24]
+        if key not in seen:
+            seen.add(key)
+            unique.append(s)
+            if len(unique) >= 3:
+                break
+
+    truncated = []
+    for s in unique:
+        if len(s) > 50:
+            s = s[:50] + "..."
+        truncated.append(s)
+
+    summary = "页面内容变化涉及：" + " / ".join(truncated)
+    # 对共享的政策索引页面做更友好的说明
+    if "gov.cn/zhengce/index" in (url or ""):
+        summary = "国务院政策库页面内容发生变化，可能新增或调整了政策条目。" + summary
+    return summary
 
 
 def load_json(path: Path) -> dict:
@@ -176,28 +221,35 @@ def main():
         current_hash = content_hash(text)
         url_results[url] = current_hash
 
-        # 只要有一个 law 之前检查过这个 URL，就以该 URL 的上次 hash 为准
+        # 只要有一个 law 之前检查过这个 URL，就以该 URL 的上次 hash / 文本快照为准
         previous_hashes = [state.get(law.get("id"), {}).get("hash") for law in laws if law.get("id")]
         previous_hash = previous_hashes[0] if previous_hashes else None
+        previous_texts = [state.get(law.get("id"), {}).get("text") for law in laws if law.get("id")]
+        previous_text = previous_texts[0] if previous_texts else ""
 
+        # 保存当前文本快照（按 law_id，便于后续按法规维度比对差异）
         for law in laws:
             law_id = law.get("id")
             if law_id:
                 state.setdefault(law_id, {})["hash"] = current_hash
+                state.setdefault(law_id, {})["text"] = text
 
         if previous_hash and current_hash != previous_hash:
+            change_summary = compute_change_summary(previous_text, text, url)
             for law in laws:
                 law["status"] = "updated"
                 law["last_changed"] = today
+                law["change_summary"] = change_summary
                 updated_laws.append(law)
                 history["events"].insert(0, {
                     "date": today,
                     "law_id": law.get("id"),
                     "law_name": law["name"],
-                    "event": "页面内容发生变化，可能有法规更新或修订",
+                    "event": change_summary,
                     "url": url,
+                    "change_summary": change_summary,
                 })
-            print(f"  ⚠️ 检测到更新（影响 {len(laws)} 部法规）")
+            print(f"  ⚠️ 检测到更新（影响 {len(laws)} 部法规）：{change_summary[:80]}...")
         else:
             for law in laws:
                 if law.get("status") == "updated":
@@ -217,6 +269,9 @@ def main():
         lines = [f"本次检查日期：{today}", "检测到以下法规页面发生变化：", ""]
         for law in updated_laws:
             lines.append(f"• {law['name']}（{law['category']}）")
+            summary = law.get("change_summary", "").strip()
+            if summary:
+                lines.append(f"  更新说明：{summary}")
             lines.append(f"  官方来源：{law['url']}")
             lines.append("")
         lines.append("详细信息请查看：")

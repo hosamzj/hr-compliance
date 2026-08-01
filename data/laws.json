@@ -11,9 +11,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "基本劳动制度",
-      "status": "updated",
+      "status": "ok",
       "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01"
+      "last_changed": "2026-08-01",
+      "change_summary": ""
     },
     {
       "id": "labor-contract-law",
@@ -24,9 +25,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "劳动合同",
-      "status": "updated",
+      "status": "ok",
       "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01"
+      "last_changed": "2026-08-01",
+      "change_summary": ""
     },
     {
       "id": "social-insurance-law",
@@ -37,9 +39,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "社会保险",
-      "status": "updated",
+      "status": "ok",
       "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01"
+      "last_changed": "2026-08-01",
+      "change_summary": ""
     },
     {
       "id": "employment-promotion-law",
@@ -50,9 +53,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "就业促进",
-      "status": "updated",
+      "status": "ok",
       "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01"
+      "last_changed": "2026-08-01",
+      "change_summary": ""
     },
     {
       "id": "labor-dispute-law",
@@ -63,9 +67,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "劳动争议",
-      "status": "updated",
+      "status": "ok",
       "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01"
+      "last_changed": "2026-08-01",
+      "change_summary": ""
     },
     {
       "id": "work-injury-regulation",
@@ -76,9 +81,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "社会保险",
-      "status": "updated",
+      "status": "ok",
       "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01"
+      "last_changed": "2026-08-01",
+      "change_summary": ""
     },
     {
       "id": "annual-leave-regulation",
@@ -89,9 +95,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "工时休假",
-      "status": "updated",
+      "status": "ok",
       "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01"
+      "last_changed": "2026-08-01",
+      "change_summary": ""
     }
   ]
 }
