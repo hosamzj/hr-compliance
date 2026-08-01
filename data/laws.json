@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-07-31",
+  "last_updated": "2026-08-01",
   "check_schedule": "每月 1 日 09:00",
   "laws": [
     {
@@ -11,9 +11,9 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "基本劳动制度",
-      "status": "ok",
-      "last_checked": "2026-07-31",
-      "last_changed": null
+      "status": "updated",
+      "last_checked": "2026-08-01",
+      "last_changed": "2026-08-01"
     },
     {
       "id": "labor-contract-law",
@@ -24,9 +24,9 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "劳动合同",
-      "status": "ok",
-      "last_checked": "2026-07-31",
-      "last_changed": null
+      "status": "updated",
+      "last_checked": "2026-08-01",
+      "last_changed": "2026-08-01"
     },
     {
       "id": "social-insurance-law",
@@ -37,9 +37,9 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "社会保险",
-      "status": "ok",
-      "last_checked": "2026-07-31",
-      "last_changed": null
+      "status": "updated",
+      "last_checked": "2026-08-01",
+      "last_changed": "2026-08-01"
     },
     {
       "id": "employment-promotion-law",
@@ -50,9 +50,9 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "就业促进",
-      "status": "ok",
-      "last_checked": "2026-07-31",
-      "last_changed": null
+      "status": "updated",
+      "last_checked": "2026-08-01",
+      "last_changed": "2026-08-01"
     },
     {
       "id": "labor-dispute-law",
@@ -63,9 +63,9 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "劳动争议",
-      "status": "ok",
-      "last_checked": "2026-07-31",
-      "last_changed": null
+      "status": "updated",
+      "last_checked": "2026-08-01",
+      "last_changed": "2026-08-01"
     },
     {
       "id": "work-injury-regulation",
@@ -76,9 +76,9 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "社会保险",
-      "status": "ok",
-      "last_checked": "2026-07-31",
-      "last_changed": null
+      "status": "updated",
+      "last_checked": "2026-08-01",
+      "last_changed": "2026-08-01"
     },
     {
       "id": "annual-leave-regulation",
@@ -89,9 +89,9 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "工时休假",
-      "status": "ok",
-      "last_checked": "2026-07-31",
-      "last_changed": null
+      "status": "updated",
+      "last_checked": "2026-08-01",
+      "last_changed": "2026-08-01"
     }
   ]
 }
