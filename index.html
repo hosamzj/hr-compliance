@@ -375,7 +375,7 @@
                     card.className = 'law-card';
                     const statusClass = law.status === 'updated' ? 'status-update' : (law.status === 'error' ? 'status-error' : 'status-ok');
                     const statusText = law.status === 'updated' ? '有更新' : (law.status === 'error' ? '检查失败' : '无更新');
-                    const changelogHtml = law.change_summary ? `<div class="changelog"><span class="changelog-label">更新说明：</span>${escapeHtml(law.change_summary)}</div>` : '';
+                    const changelogHtml = (law.status === 'updated' && law.change_summary) ? `<div class="changelog"><span class="changelog-label">更新说明：</span>${escapeHtml(law.change_summary)}</div>` : '';
                     card.innerHTML = `
                         <div class="law-card-header">
                             <div>
