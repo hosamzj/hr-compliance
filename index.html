@@ -429,7 +429,10 @@
         function renderUpdateSummary(laws, events) {
             const container = document.getElementById('update-summary');
             const content = document.getElementById('update-summary-content');
-            const recentEvents = events.slice(0, 7);
+            // 仅展示最近 30 天内的变更事件
+            const cutoff = new Date();
+            cutoff.setDate(cutoff.getDate() - 30);
+            const recentEvents = events.filter(e => new Date(e.date) >= cutoff).slice(0, 10);
             if (recentEvents.length === 0) {
                 container.style.display = 'none';
                 return;
