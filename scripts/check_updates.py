@@ -312,8 +312,18 @@ def main():
     # 提交并推送
     git_push_changes(f"chore: monthly HR law check on {today}")
 
-    # 输出摘要给 cron 任务
-    print(f"\n检查摘要：总计 {len(laws_data['laws'])} 部，更新 {len(updated_laws)} 部，异常 {len(error_laws)} 部")
+    # 输出简短摘要给 cron 任务，避免微信长消息被限流
+    report_url = "https://hosamzj.github.io/hr-compliance/"
+    if updated_laws:
+        names_preview = "、".join(u["name"] for u in updated_laws)
+        if len(names_preview) > 80:
+            names_preview = names_preview[:80] + "..."
+        print(f"\n本次检测到 {len(updated_laws)} 处法规页面变化：{names_preview}")
+        print(f"详细内容已发邮件，知识库：{report_url}")
+    elif error_laws:
+        print(f"\n本次检查完成，{len(error_laws)} 个网站访问异常，请查看邮件或日志。")
+    else:
+        print(f"\n{today} HR 法规检查完成，未检测到更新。")
 
 
 if __name__ == "__main__":
