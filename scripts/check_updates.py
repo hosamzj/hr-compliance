@@ -239,20 +239,35 @@ def main():
 
         if previous_hash and current_hash != previous_hash:
             change_summary = compute_change_summary(previous_text, text, url)
+            # 如果多个法规共享同一 URL，合并为一条变更事件，避免索引页微调导致重复刷屏
+            affected_names = [law["name"] for law in laws]
+            grouped_summary = change_summary
+            if len(laws) > 1:
+                grouped_summary = f"页面（{url}）内容发生变化，涉及 {len(laws)} 部法规：{'、'.join(affected_names)}。"
+                # 对 gov.cn/zhengce/index 这类共享索引页给出更明确的说明
+                if "gov.cn/zhengce/index" in url:
+                    grouped_summary += " 该 URL 为政策索引首页，变化不代表所列法规本身修订。"
+
             for law in laws:
                 law["status"] = "updated"
                 law["last_changed"] = today
-                law["change_summary"] = change_summary
-                updated_laws.append(law)
-                history["events"].insert(0, {
-                    "date": today,
-                    "law_id": law.get("id"),
-                    "law_name": law["name"],
-                    "event": change_summary,
-                    "url": url,
-                    "change_summary": change_summary,
-                })
-            print(f"  ⚠️ 检测到更新（影响 {len(laws)} 部法规）：{change_summary[:80]}...")
+                law["change_summary"] = grouped_summary
+
+            updated_laws.append({
+                "name": "、".join(affected_names),
+                "category": "多法规/共享索引页" if len(laws) > 1 else laws[0]["category"],
+                "url": url,
+                "change_summary": grouped_summary,
+            })
+            history["events"].insert(0, {
+                "date": today,
+                "law_id": ",".join(law.get("id") for law in laws if law.get("id")),
+                "law_name": "、".join(affected_names),
+                "event": grouped_summary,
+                "url": url,
+                "change_summary": grouped_summary,
+            })
+            print(f"  ⚠️ 检测到更新（影响 {len(laws)} 部法规）：{grouped_summary[:80]}...")
         else:
             for law in laws:
                 if law.get("status") == "updated":

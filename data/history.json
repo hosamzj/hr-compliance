@@ -1,6 +1,14 @@
 {
   "events": [
     {
+      "date": "2026-08-04",
+      "law_id": "labor-law,labor-contract-law,social-insurance-law,employment-promotion-law,labor-dispute-law,work-injury-regulation,annual-leave-regulation",
+      "law_name": "中华人民共和国劳动法、中华人民共和国劳动合同法、中华人民共和国社会保险法、中华人民共和国就业促进法、中华人民共和国劳动争议调解仲裁法、工伤保险条例、职工带薪年休假条例",
+      "event": "页面（https://www.gov.cn/zhengce/index.htm）内容发生变化，涉及 7 部法规：中华人民共和国劳动法、中华人民共和国劳动合同法、中华人民共和国社会保险法、中华人民共和国就业促进法、中华人民共和国劳动争议调解仲裁法、工伤保险条例、职工带薪年休假条例。 该 URL 为政策索引首页，变化不代表所列法规本身修订。",
+      "url": "https://www.gov.cn/zhengce/index.htm",
+      "change_summary": "页面（https://www.gov.cn/zhengce/index.htm）内容发生变化，涉及 7 部法规：中华人民共和国劳动法、中华人民共和国劳动合同法、中华人民共和国社会保险法、中华人民共和国就业促进法、中华人民共和国劳动争议调解仲裁法、工伤保险条例、职工带薪年休假条例。 该 URL 为政策索引首页，变化不代表所列法规本身修订。"
+    },
+    {
       "date": "2026-08-01",
       "law_id": "annual-leave-regulation",
       "law_name": "职工带薪年休假条例",

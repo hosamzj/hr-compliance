@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-08-01",
+  "last_updated": "2026-08-04",
   "check_schedule": "每月 1 日 09:00",
   "laws": [
     {
@@ -11,10 +11,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "基本劳动制度",
-      "status": "ok",
-      "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01",
-      "change_summary": ""
+      "status": "updated",
+      "last_checked": "2026-08-04",
+      "last_changed": "2026-08-04",
+      "change_summary": "页面（https://www.gov.cn/zhengce/index.htm）内容发生变化，涉及 7 部法规：中华人民共和国劳动法、中华人民共和国劳动合同法、中华人民共和国社会保险法、中华人民共和国就业促进法、中华人民共和国劳动争议调解仲裁法、工伤保险条例、职工带薪年休假条例。 该 URL 为政策索引首页，变化不代表所列法规本身修订。"
     },
     {
       "id": "labor-contract-law",
@@ -25,10 +25,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "劳动合同",
-      "status": "ok",
-      "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01",
-      "change_summary": ""
+      "status": "updated",
+      "last_checked": "2026-08-04",
+      "last_changed": "2026-08-04",
+      "change_summary": "页面（https://www.gov.cn/zhengce/index.htm）内容发生变化，涉及 7 部法规：中华人民共和国劳动法、中华人民共和国劳动合同法、中华人民共和国社会保险法、中华人民共和国就业促进法、中华人民共和国劳动争议调解仲裁法、工伤保险条例、职工带薪年休假条例。 该 URL 为政策索引首页，变化不代表所列法规本身修订。"
     },
     {
       "id": "social-insurance-law",
@@ -39,10 +39,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "社会保险",
-      "status": "ok",
-      "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01",
-      "change_summary": ""
+      "status": "updated",
+      "last_checked": "2026-08-04",
+      "last_changed": "2026-08-04",
+      "change_summary": "页面（https://www.gov.cn/zhengce/index.htm）内容发生变化，涉及 7 部法规：中华人民共和国劳动法、中华人民共和国劳动合同法、中华人民共和国社会保险法、中华人民共和国就业促进法、中华人民共和国劳动争议调解仲裁法、工伤保险条例、职工带薪年休假条例。 该 URL 为政策索引首页，变化不代表所列法规本身修订。"
     },
     {
       "id": "employment-promotion-law",
@@ -53,10 +53,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "就业促进",
-      "status": "ok",
-      "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01",
-      "change_summary": ""
+      "status": "updated",
+      "last_checked": "2026-08-04",
+      "last_changed": "2026-08-04",
+      "change_summary": "页面（https://www.gov.cn/zhengce/index.htm）内容发生变化，涉及 7 部法规：中华人民共和国劳动法、中华人民共和国劳动合同法、中华人民共和国社会保险法、中华人民共和国就业促进法、中华人民共和国劳动争议调解仲裁法、工伤保险条例、职工带薪年休假条例。 该 URL 为政策索引首页，变化不代表所列法规本身修订。"
     },
     {
       "id": "labor-dispute-law",
@@ -67,10 +67,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "劳动争议",
-      "status": "ok",
-      "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01",
-      "change_summary": ""
+      "status": "updated",
+      "last_checked": "2026-08-04",
+      "last_changed": "2026-08-04",
+      "change_summary": "页面（https://www.gov.cn/zhengce/index.htm）内容发生变化，涉及 7 部法规：中华人民共和国劳动法、中华人民共和国劳动合同法、中华人民共和国社会保险法、中华人民共和国就业促进法、中华人民共和国劳动争议调解仲裁法、工伤保险条例、职工带薪年休假条例。 该 URL 为政策索引首页，变化不代表所列法规本身修订。"
     },
     {
       "id": "work-injury-regulation",
@@ -81,10 +81,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "社会保险",
-      "status": "ok",
-      "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01",
-      "change_summary": ""
+      "status": "updated",
+      "last_checked": "2026-08-04",
+      "last_changed": "2026-08-04",
+      "change_summary": "页面（https://www.gov.cn/zhengce/index.htm）内容发生变化，涉及 7 部法规：中华人民共和国劳动法、中华人民共和国劳动合同法、中华人民共和国社会保险法、中华人民共和国就业促进法、中华人民共和国劳动争议调解仲裁法、工伤保险条例、职工带薪年休假条例。 该 URL 为政策索引首页，变化不代表所列法规本身修订。"
     },
     {
       "id": "annual-leave-regulation",
@@ -95,10 +95,10 @@
       "url": "https://www.gov.cn/zhengce/index.htm",
       "source_type": "gov.cn",
       "category": "工时休假",
-      "status": "ok",
-      "last_checked": "2026-08-01",
-      "last_changed": "2026-08-01",
-      "change_summary": ""
+      "status": "updated",
+      "last_checked": "2026-08-04",
+      "last_changed": "2026-08-04",
+      "change_summary": "页面（https://www.gov.cn/zhengce/index.htm）内容发生变化，涉及 7 部法规：中华人民共和国劳动法、中华人民共和国劳动合同法、中华人民共和国社会保险法、中华人民共和国就业促进法、中华人民共和国劳动争议调解仲裁法、工伤保险条例、职工带薪年休假条例。 该 URL 为政策索引首页，变化不代表所列法规本身修订。"
     }
   ]
 }
