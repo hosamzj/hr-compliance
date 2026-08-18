@@ -13,7 +13,7 @@ HR 法律法规月度检查脚本
 7. 将变更提交并推送到 GitHub Pages 仓库
 
 用法：
-    python scripts/check_updates.py [--notify] [--recipients a@x.com,b@x.com]
+    python scripts/check_updates.py [--notify] [--quiet] [--recipients a@x.com,b@x.com]
 """
 
 import argparse
@@ -142,16 +142,18 @@ def git_push_changes(message: str):
                 timeout=120,
             )
             if result.returncode == 0:
-                print("已推送到 GitHub Pages")
+                if not QUIET:
+                    print("已推送到 GitHub Pages")
                 return
             if result.stderr and ("rejected" in result.stderr.lower() or "non-fast-forward" in result.stderr.lower()):
                 print("远程有更新，先拉取合并...")
                 subprocess.run(["git", "pull", "origin", "main", "--rebase"], cwd=REPO_DIR, check=False)
             time.sleep(2)
-        if result:
+        if result and not QUIET:
             print("推送失败：", result.stderr)
     except Exception as e:
-        print("Git 操作失败：", e)
+        if not QUIET:
+            print("Git 操作失败：", e)
 
 
 def send_email(subject: str, body: str, recipients: list[str]):
@@ -192,7 +194,12 @@ Content-Type: text/plain; charset=utf-8
         print("邮件发送异常：", e)
 
 
+# 全局安静模式标志，供 git_push 使用
+QUIET = False
+
+
 def main():
+    global QUIET
     parser = argparse.ArgumentParser(description="HR 法律法规月度检查脚本")
     parser.add_argument("--notify", action="store_true", help="检测到更新时发送邮件通知")
     parser.add_argument(
@@ -200,8 +207,10 @@ def main():
         default=",".join(DEFAULT_RECIPIENTS),
         help="收件人邮箱，多个用逗号分隔",
     )
+    parser.add_argument("--quiet", action="store_true", help="安静模式，只输出摘要")
     args = parser.parse_args()
 
+    QUIET = args.quiet
     recipients = [r.strip() for r in args.recipients.split(",") if r.strip()]
 
     laws_data = load_json(LAWS_FILE)
@@ -213,7 +222,6 @@ def main():
     today = date_str()
     updated_laws = []
     error_laws = []
-    first_run = not state
 
     # 按 URL 去重：同一页面只抓取一次
     url_to_laws = {}
@@ -226,7 +234,10 @@ def main():
     url_results = {}
     for url, laws in url_to_laws.items():
         names = "、".join(l["name"] for l in laws)
-        print(f"正在检查：{names} ...")
+        if QUIET:
+            print(f"检查：{names}", end=" ")
+        else:
+            print(f"正在检查：{names} ...")
         text, ok = fetch_content(url)
         for law in laws:
             law["last_checked"] = today
@@ -235,7 +246,10 @@ def main():
             for law in laws:
                 law["status"] = "error"
                 error_laws.append((law["name"], text[:200]))
-            print(f"  检查失败：{text[:100]}")
+            if QUIET:
+                print("失败")
+            else:
+                print(f"  检查失败：{text[:100]}")
             continue
 
         current_hash = content_hash(text)
@@ -243,7 +257,8 @@ def main():
 
         # 以该 URL 下任一 law_id 的上次快照作为基准
         previous_hashes = [state.get(law.get("id"), {}).get("hash") for law in laws if law.get("id")]
-        previous_hash = previous_hashes[0] if any(h is not None for h in previous_hashes) else None
+        has_previous = any(h is not None for h in previous_hashes)
+        previous_hash = previous_hashes[0] if has_previous else None
         previous_texts = [state.get(law.get("id"), {}).get("text") for law in laws if law.get("id")]
         previous_text = previous_texts[0] if any(t is not None for t in previous_texts) else ""
 
@@ -281,14 +296,20 @@ def main():
                 "url": url,
                 "change_summary": grouped_summary,
             })
-            print(f"  ⚠️ 检测到更新（影响 {len(laws)} 部法规）：{grouped_summary[:80]}...")
+            if QUIET:
+                print("更新")
+            else:
+                print(f"  ⚠️ 检测到更新（影响 {len(laws)} 部法规）：{grouped_summary[:80]}...")
         else:
             for law in laws:
                 if law.get("status") == "updated":
                     law["status"] = "ok"
                 else:
                     law["status"] = law.get("status") or "ok"
-            print(f"  无更新")
+            if QUIET:
+                print("无更新")
+            else:
+                print(f"  无更新")
 
     laws_data["last_updated"] = today
     laws_data["check_schedule"] = "每月 1 日 09:00"
@@ -296,28 +317,34 @@ def main():
     save_json(STATE_FILE, state)
     save_json(HISTORY_FILE, history)
 
+    summary_lines = [f"HR 法规月度检查完成：{today}"]
     if updated_laws:
-        subject = f"【HR 法规更新提醒】{today} 检测到 {len(updated_laws)} 个页面变化"
-        lines = [f"本次检查日期：{today}", "检测到以下法规页面发生变化：", ""]
+        summary_lines.append(f"检测到 {len(updated_laws)} 个页面变化，涉及法规：")
         for law in updated_laws:
-            lines.append(f"• {law['name']}（{law['category']}）")
-            summary = law.get("change_summary", "").strip()
-            if summary:
-                lines.append(f"  更新说明：{summary}")
-            lines.append(f"  官方来源：{law['url']}")
-            lines.append("")
-        lines.append("详细信息请查看：")
-        lines.append("https://hosamzj.github.io/hr-compliance/")
-        body = "\n".join(lines)
+            summary_lines.append(f"• {law['name']}（{law['category']}）")
+        subject = f"【HR 法规更新提醒】{today} 检测到 {len(updated_laws)} 个页面变化"
+        body = "\n".join([
+            f"本次检查日期：{today}",
+            "检测到以下法规页面发生变化：",
+            "",
+        ] + [
+            f"• {law['name']}（{law['category']}）\n  更新说明：{law.get('change_summary', '')}\n  官方来源：{law['url']}"
+            for law in updated_laws
+        ] + [
+            "",
+            "详细信息请查看：",
+            "https://hosamzj.github.io/hr-compliance/",
+        ])
         if args.notify:
             send_email(subject, body, recipients)
         else:
-            print(f"检测到 {len(updated_laws)} 个变化，因未开启 --notify，不发送邮件。")
-            print(body[:500])
+            summary_lines.append("检测到变化，因未开启 --notify，不发送邮件。")
     else:
-        print(f"{today} 检查完成，未检测到法规更新")
+        summary_lines.append("未检测到法规更新。")
         if error_laws:
-            print(f"但有 {len(error_laws)} 个页面检查失败")
+            summary_lines.append(f"但有 {len(error_laws)} 个页面检查失败。")
+
+    print("\n" + "\n".join(summary_lines))
 
     git_push_changes(f"hr-compliance: 月度法规检查 {today}")
 
