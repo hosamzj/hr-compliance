@@ -257,6 +257,8 @@ def main():
     url_results = {}
     # 记录每部法规是否任一 URL 发生变化，用于最终状态
     law_changed = {}
+    # 记录本次检查中出现抓取出错的法规 id
+    error_law_ids = set()
 
     for url, laws in url_to_entries.items():
         names = "、".join(l["name"] for l in laws)
@@ -270,6 +272,7 @@ def main():
             for law in laws:
                 law["status"] = "error"
                 error_laws.append((law["name"], text[:200]))
+                error_law_ids.add(law.get("id"))
             if quiet:
                 print("失败")
             else:
@@ -324,13 +327,14 @@ def main():
             else:
                 print(f"  无更新")
 
-    # 同一法规任一 URL 无变化则保持 ok
+    # 同一法规任一 URL 无变化则保持 ok；若之前是 error，本次未出错则恢复 ok
     for law in laws_data.get("laws", []):
-        if law.get("id") not in law_changed:
-            if law.get("status") == "updated":
-                law["status"] = "ok"
-            else:
-                law["status"] = law.get("status") or "ok"
+        law_id = law.get("id")
+        if law_id in law_changed:
+            continue
+        if law_id in error_law_ids:
+            continue
+        law["status"] = "ok"
 
     laws_data["last_updated"] = today
     laws_data["check_schedule"] = "每月 1 日 09:00"
