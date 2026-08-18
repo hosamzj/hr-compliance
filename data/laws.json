@@ -878,12 +878,12 @@
     },
     {
       "id": "law_040",
-      "name": "地方人口与计划生育条例、工资支付规定、最低工资及社保缴费政策",
+      "name": "上海市人口与计划生育条例、工资支付规定、最低工资及社保缴费政策",
       "issuer": "地方性法规/政策",
       "effective_date": "待确认",
-      "description": "地方差异事项",
-      "url": "https://www.shanghai.gov.cn/nw12344/index.html;https://www.jiangsu.gov.cn/col/col84242/index.html",
-      "source_url": "https://www.shanghai.gov.cn/; https://www.jiangsu.gov.cn/",
+      "description": "上海市地方差异事项",
+      "url": "https://www.shanghai.gov.cn/nw12344/index.html",
+      "source_url": "https://www.shanghai.gov.cn/nw12344/index.html",
       "source_type": "HR专项",
       "category": "地方差异事项",
       "level": "地方性法规/政策",
@@ -894,7 +894,7 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "Excel 原 URL 格式错误；分别监控上海市政府“政策法规”频道与江苏省政府“最新文件”频道，覆盖两地地方政策变化",
+      "monitor_note": "监控上海市政府“政策法规”频道（nw12344），覆盖上海地方人口计生、工资支付、最低工资及社保政策变化",
       "latest_amendment_date": "",
       "date_source": "不适用",
       "date_note": "地方性政策，无统一生效/修正日期"
@@ -921,6 +921,29 @@
       "latest_amendment_date": "2026-04-08",
       "date_source": "gov.cn",
       "date_note": "2026年4月8日公布，2026-07-01施行"
+    },
+    {
+      "id": "law_042",
+      "name": "江苏省人口与计划生育条例、工资支付规定、最低工资及社保缴费政策",
+      "issuer": "地方性法规/政策",
+      "effective_date": "待确认",
+      "description": "江苏省地方差异事项",
+      "url": "https://www.jiangsu.gov.cn/col/col84242/index.html",
+      "source_url": "https://www.jiangsu.gov.cn/col/col84242/index.html",
+      "source_type": "HR专项",
+      "category": "地方差异事项",
+      "level": "地方性法规/政策",
+      "owner": "C&B / HR Operations / Legal",
+      "frequency": "每月",
+      "source_group": "",
+      "status": "ok",
+      "last_checked": "2026-08-18",
+      "last_changed": "",
+      "change_summary": "",
+      "monitor_note": "监控江苏省政府“最新文件”频道（col84242），覆盖江苏地方人口计生、工资支付、最低工资及社保政策变化",
+      "latest_amendment_date": "",
+      "date_source": "不适用",
+      "date_note": "地方性政策，无统一生效/修正日期"
     }
   ]
 }

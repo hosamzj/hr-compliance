@@ -231,12 +231,18 @@
     "effective_date": null,
     "latest_amendment_date": null,
     "source": "不适用",
-    "note": "地方性政策，无统一生效/修正日期"
+    "note": "上海市地方性政策，无统一生效/修正日期"
   },
   "law_041": {
     "effective_date": "2026-07-01",
     "latest_amendment_date": "2026-04-08",
     "source": "gov.cn",
     "note": "2026年4月8日公布，2026-07-01施行"
+  },
+  "law_042": {
+    "effective_date": null,
+    "latest_amendment_date": null,
+    "source": "不适用",
+    "note": "江苏省地方性政策，无统一生效/修正日期"
   }
 }
