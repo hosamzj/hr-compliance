@@ -4,17 +4,21 @@
 HR 法律法规月度检查脚本
 
 功能：
-1. 读取 data/laws.json 中列出的法规与官方 URL
-2. 抓取每个 URL 的页面内容并计算哈希
+1. 读取 data/laws.json 中列出的法规与监控 URL（优先使用 monitor_url，回退 url）
+2. 按 URL 去重抓取页面内容并计算哈希
 3. 与上次保存的哈希对比，判断是否有更新
-4. 更新 laws.json 状态、检查时间、更新时间
-5. 更新 history.json 变更记录
-6. 如有更新，生成邮件/微信通知摘要
+4. 更新 laws.json 状态、检查时间、更新时间、变更摘要
+5. 更新 data/state.json 和 data/history.json
+6. 如有更新且 --notify 已开启，发送邮件通知到指定收件人
 7. 将变更提交并推送到 GitHub Pages 仓库
+
+用法：
+    python scripts/check_updates.py [--notify] [--recipients a@x.com,b@x.com]
 """
 
-import json
+import argparse
 import hashlib
+import json
 import os
 import re
 import subprocess
@@ -41,6 +45,8 @@ HEADERS = {
     "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
 }
 
+DEFAULT_RECIPIENTS = ["sam.huo@te.com", "fiona.lu@te.com"]
+
 
 def now_str() -> str:
     return datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d %H:%M:%S")
@@ -59,7 +65,7 @@ def fetch_content(url: str) -> tuple[str, bool]:
         if resp.encoding and resp.encoding.lower() in ("iso-8859-1", "latin-1"):
             resp.encoding = "utf-8"
         text = resp.text
-        # 去除 HTML 标签、空白、JS 变量等不稳定内容，只保留可读的文本和关键元数据
+        # 去除 HTML 标签、脚本、样式、空白，保留可读文本
         text = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", text, flags=re.IGNORECASE)
         text = re.sub(r"<style[^>]*>[\s\S]*?</style>", "", text, flags=re.IGNORECASE)
         text = re.sub(r"<[^>]+>", "", text)
@@ -76,24 +82,20 @@ def content_hash(text: str) -> str:
 def compute_change_summary(old_text: str, new_text: str, url: str = "") -> str:
     """基于两次抓取的文本差异生成简要更新说明。"""
     if not old_text:
-        return "首次建立基准版本，后续将持续比对变化。"
+        return "首次建立监控基准版本，后续将持续比对变化。"
 
-    # 使用 difflib 找出新增或修改的文本片段
     sm = difflib.SequenceMatcher(None, old_text, new_text)
     changed_snippets = []
     for tag, _i1, _i2, j1, j2 in sm.get_opcodes():
         if tag in ("replace", "insert", "delete"):
             snippet = new_text[j1:j2].strip()
-            # 过滤过短或纯标点的片段
             if len(snippet) >= 6 and not re.match(r"^[\s\W]+$", snippet):
-                # 去除可能的 HTML 实体残留和过长片段
                 snippet = re.sub(r"[<>'&;]+", "", snippet)
                 changed_snippets.append(snippet)
 
     if not changed_snippets:
         return "页面内容哈希发生变化，但未提取到可读文本差异。"
 
-    # 去重并取前几条
     seen = set()
     unique = []
     for s in changed_snippets:
@@ -104,14 +106,8 @@ def compute_change_summary(old_text: str, new_text: str, url: str = "") -> str:
             if len(unique) >= 3:
                 break
 
-    truncated = []
-    for s in unique:
-        if len(s) > 50:
-            s = s[:50] + "..."
-        truncated.append(s)
-
+    truncated = [s if len(s) <= 50 else s[:50] + "..." for s in unique]
     summary = "页面内容变化涉及：" + " / ".join(truncated)
-    # 对共享的政策索引页面做更友好的说明
     if "gov.cn/zhengce/index" in (url or ""):
         summary = "国务院政策库页面内容发生变化，可能新增或调整了政策条目。" + summary
     return summary
@@ -158,18 +154,27 @@ def git_push_changes(message: str):
         print("Git 操作失败：", e)
 
 
-def send_email(subject: str, body: str, to: str = "sam.huo@te.com"):
-    """通过 Himalaya 发送邮件通知"""
-    try:
-        eml = f"""Subject: {subject}
+def send_email(subject: str, body: str, recipients: list[str]):
+    """通过 Himalaya 发送邮件通知（支持多收件人）"""
+    if not recipients:
+        print("无收件人，跳过邮件通知")
+        return
+
+    to_args = []
+    for addr in recipients:
+        to_args.extend(["-t", addr])
+
+    eml = f"""Subject: {subject}
 From: hosamzj@163.com
-To: {to}
+To: {recipients[0]}
+Cc: {", ".join(recipients[1:]) if len(recipients) > 1 else ""}
 Content-Type: text/plain; charset=utf-8
 
 {body}
 """
+    try:
         result = subprocess.run(
-            ["himalaya", "smtp", "send", "-f", "hosamzj@163.com", "-t", to],
+            ["himalaya", "smtp", "send", "-f", "hosamzj@163.com"] + to_args,
             input=eml,
             cwd=REPO_DIR,
             capture_output=True,
@@ -178,7 +183,7 @@ Content-Type: text/plain; charset=utf-8
             timeout=60,
         )
         if result.returncode == 0:
-            print(f"邮件已发送至 {to}")
+            print(f"邮件已发送至 {', '.join(recipients)}")
         else:
             print("邮件发送失败：", result.stderr)
     except FileNotFoundError:
@@ -188,6 +193,17 @@ Content-Type: text/plain; charset=utf-8
 
 
 def main():
+    parser = argparse.ArgumentParser(description="HR 法律法规月度检查脚本")
+    parser.add_argument("--notify", action="store_true", help="检测到更新时发送邮件通知")
+    parser.add_argument(
+        "--recipients",
+        default=",".join(DEFAULT_RECIPIENTS),
+        help="收件人邮箱，多个用逗号分隔",
+    )
+    args = parser.parse_args()
+
+    recipients = [r.strip() for r in args.recipients.split(",") if r.strip()]
+
     laws_data = load_json(LAWS_FILE)
     state = load_json(STATE_FILE)
     history = load_json(HISTORY_FILE)
@@ -197,11 +213,12 @@ def main():
     today = date_str()
     updated_laws = []
     error_laws = []
+    first_run = not state
 
-    # 按 URL 去重，避免相同 URL 被重复抓取和重复报警
+    # 按 URL 去重：同一页面只抓取一次
     url_to_laws = {}
     for law in laws_data.get("laws", []):
-        url = law.get("url")
+        url = law.get("monitor_url") or law.get("url")
         if not url:
             continue
         url_to_laws.setdefault(url, []).append(law)
@@ -224,13 +241,12 @@ def main():
         current_hash = content_hash(text)
         url_results[url] = current_hash
 
-        # 只要有一个 law 之前检查过这个 URL，就以该 URL 的上次 hash / 文本快照为准
+        # 以该 URL 下任一 law_id 的上次快照作为基准
         previous_hashes = [state.get(law.get("id"), {}).get("hash") for law in laws if law.get("id")]
-        previous_hash = previous_hashes[0] if previous_hashes else None
+        previous_hash = previous_hashes[0] if any(h is not None for h in previous_hashes) else None
         previous_texts = [state.get(law.get("id"), {}).get("text") for law in laws if law.get("id")]
-        previous_text = previous_texts[0] if previous_texts else ""
+        previous_text = previous_texts[0] if any(t is not None for t in previous_texts) else ""
 
-        # 保存当前文本快照（按 law_id，便于后续按法规维度比对差异）
         for law in laws:
             law_id = law.get("id")
             if law_id:
@@ -239,12 +255,10 @@ def main():
 
         if previous_hash and current_hash != previous_hash:
             change_summary = compute_change_summary(previous_text, text, url)
-            # 如果多个法规共享同一 URL，合并为一条变更事件，避免索引页微调导致重复刷屏
             affected_names = [law["name"] for law in laws]
             grouped_summary = change_summary
             if len(laws) > 1:
                 grouped_summary = f"页面（{url}）内容发生变化，涉及 {len(laws)} 部法规：{'、'.join(affected_names)}。"
-                # 对 gov.cn/zhengce/index 这类共享索引页给出更明确的说明
                 if "gov.cn/zhengce/index" in url:
                     grouped_summary += " 该 URL 为政策索引首页，变化不代表所列法规本身修订。"
 
@@ -255,7 +269,7 @@ def main():
 
             updated_laws.append({
                 "name": "、".join(affected_names),
-                "category": "多法规/共享索引页" if len(laws) > 1 else laws[0]["category"],
+                "category": "多法规/共享索引页" if len(laws) > 1 else (laws[0].get("category") or ""),
                 "url": url,
                 "change_summary": grouped_summary,
             })
@@ -277,13 +291,13 @@ def main():
             print(f"  无更新")
 
     laws_data["last_updated"] = today
+    laws_data["check_schedule"] = "每月 1 日 09:00"
     save_json(LAWS_FILE, laws_data)
     save_json(STATE_FILE, state)
     save_json(HISTORY_FILE, history)
 
-    # 生成通知消息
     if updated_laws:
-        subject = f"【HR 法规更新提醒】{today} 检测到 {len(updated_laws)} 部法规变化"
+        subject = f"【HR 法规更新提醒】{today} 检测到 {len(updated_laws)} 个页面变化"
         lines = [f"本次检查日期：{today}", "检测到以下法规页面发生变化：", ""]
         for law in updated_laws:
             lines.append(f"• {law['name']}（{law['category']}）")
@@ -295,35 +309,17 @@ def main():
         lines.append("详细信息请查看：")
         lines.append("https://hosamzj.github.io/hr-compliance/")
         body = "\n".join(lines)
-        send_email(subject, body)
+        if args.notify:
+            send_email(subject, body, recipients)
+        else:
+            print(f"检测到 {len(updated_laws)} 个变化，因未开启 --notify，不发送邮件。")
+            print(body[:500])
     else:
         print(f"{today} 检查完成，未检测到法规更新")
         if error_laws:
-            subject = f"【HR 法规检查异常】{today} 部分网站访问失败"
-            lines = [f"本次检查日期：{today}", "以下法规网站访问失败：", ""]
-            for name, err in error_laws:
-                lines.append(f"• {name}：{err}")
-            body = "\n".join(lines)
-            send_email(subject, body)
+            print(f"但有 {len(error_laws)} 个页面检查失败")
 
-    # 更新 index.html 中的历史记录（可选：也可以由前端动态读取 history.json）
-    # 这里保持 index.html 静态不变，历史记录通过 data/history.json 提供给前端
-
-    # 提交并推送
-    git_push_changes(f"chore: monthly HR law check on {today}")
-
-    # 输出简短摘要给 cron 任务，避免微信长消息被限流
-    report_url = "https://hosamzj.github.io/hr-compliance/"
-    if updated_laws:
-        names_preview = "、".join(u["name"] for u in updated_laws)
-        if len(names_preview) > 80:
-            names_preview = names_preview[:80] + "..."
-        print(f"\n本次检测到 {len(updated_laws)} 处法规页面变化：{names_preview}")
-        print(f"详细内容已发邮件，知识库：{report_url}")
-    elif error_laws:
-        print(f"\n本次检查完成，{len(error_laws)} 个网站访问异常，请查看邮件或日志。")
-    else:
-        print(f"\n{today} HR 法规检查完成，未检测到更新。")
+    git_push_changes(f"hr-compliance: 月度法规检查 {today}")
 
 
 if __name__ == "__main__":

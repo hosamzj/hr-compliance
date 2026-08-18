@@ -318,9 +318,9 @@
 
         <div class="meta-bar">
             <span>📅 每月 1 日 09:00 自动检查</span>
-            <span>🔔 微信 + 邮件通知</span>
+            <span>🔔 邮件通知</span>
             <span>📧 邮件订阅通知</span>
-            <span class="status-badge status-ok">● 监控运行中</span>
+            <span class="status-badge status-ok">● 监控 40 部法规</span>
         </div>
 
         <section class="update-summary" id="update-summary" style="display: none;">
@@ -345,8 +345,8 @@
             </h2>
             <div class="history-list" id="history-list">
                 <div class="history-item">
-                    <span class="date">2026-07-31</span>
-                    <span class="event">知识库初始化，开始监控 7 部核心法律法规。</span>
+                    <span class="date">2026-08-18</span>
+                    <span class="event">知识库升级，开始监控 40 部 HR/商业道德相关法律法规。</span>
                 </div>
             </div>
         </section>
@@ -388,7 +388,7 @@
                         ${changelogHtml}
                         <div class="law-card-footer">
                             <a href="${law.url}" target="_blank" rel="noopener">查看官方来源 →</a>
-                            <span class="law-meta">上次检查：${law.last_checked || '未检查'}</span>
+                            <span class="law-meta">${law.owner || ''} · ${law.frequency || '每月'} · 上次检查：${law.last_checked || '未检查'}</span>
                         </div>
                     `;
                     grid.appendChild(card);
