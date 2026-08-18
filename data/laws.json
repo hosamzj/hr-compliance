@@ -768,7 +768,7 @@
       "issuer": "地方性法规/政策",
       "effective_date": "现行有效",
       "description": "地方差异事项",
-      "url": "https://www.shanghai.gov.cn/nw12344/index.html",
+      "url": "https://www.shanghai.gov.cn/nw12344/index.html;https://www.jiangsu.gov.cn/col/col84242/index.html",
       "source_url": "https://www.shanghai.gov.cn/; https://www.jiangsu.gov.cn/",
       "source_type": "HR专项",
       "category": "地方差异事项",
@@ -780,7 +780,7 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "Excel 原 URL 格式错误；当前监控上海市政府“政策法规”频道，江苏等其他经营所在地建议单独添加监控 URL"
+      "monitor_note": "Excel 原 URL 格式错误；分别监控上海市政府“政策法规”频道与江苏省政府“最新文件”频道，覆盖两地地方政策变化"
     },
     {
       "id": "law_041",

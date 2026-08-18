@@ -5,7 +5,7 @@ HR 法律法规月度检查脚本
 
 功能：
 1. 读取 data/laws.json 中列出的法规与监控 URL（优先使用 monitor_url，回退 url）
-2. 按 URL 去重抓取页面内容并计算哈希
+2. 按 URL 去重抓取页面内容并计算哈希（支持同一法规多个 URL 用 ; 分隔）
 3. 与上次保存的哈希对比，判断是否有更新
 4. 更新 laws.json 状态、检查时间、更新时间、变更摘要
 5. 更新 data/state.json 和 data/history.json
@@ -126,7 +126,7 @@ def save_json(path: Path, data: dict):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
-def git_push_changes(message: str):
+def git_push_changes(message: str, quiet: bool = False):
     """提交并推送变更"""
     try:
         subprocess.run(["git", "add", "-A"], cwd=REPO_DIR, check=True)
@@ -142,17 +142,17 @@ def git_push_changes(message: str):
                 timeout=120,
             )
             if result.returncode == 0:
-                if not QUIET:
+                if not quiet:
                     print("已推送到 GitHub Pages")
                 return
             if result.stderr and ("rejected" in result.stderr.lower() or "non-fast-forward" in result.stderr.lower()):
                 print("远程有更新，先拉取合并...")
                 subprocess.run(["git", "pull", "origin", "main", "--rebase"], cwd=REPO_DIR, check=False)
             time.sleep(2)
-        if result and not QUIET:
+        if result and not quiet:
             print("推送失败：", result.stderr)
     except Exception as e:
-        if not QUIET:
+        if not quiet:
             print("Git 操作失败：", e)
 
 
@@ -194,12 +194,34 @@ Content-Type: text/plain; charset=utf-8
         print("邮件发送异常：", e)
 
 
-# 全局安静模式标志，供 git_push 使用
-QUIET = False
+def split_urls(raw_url: str) -> list[str]:
+    if not raw_url:
+        return []
+    return [u.strip() for u in raw_url.split(";") if u.strip()]
+
+
+def get_previous(state: dict, law_id: str, url: str):
+    """获取指定 law_id + url 的上一次 hash/text。兼容旧版扁平结构。"""
+    entry = state.get(law_id)
+    if not entry:
+        return None, ""
+    # 旧版：{hash, text}
+    if isinstance(entry, dict) and "hash" in entry:
+        return entry.get("hash"), entry.get("text", "")
+    # 新版：{url: {hash, text}}
+    if isinstance(entry, dict) and url in entry:
+        return entry[url].get("hash"), entry[url].get("text", "")
+    return None, ""
+
+
+def set_current(state: dict, law_id: str, url: str, current_hash: str, text: str):
+    if law_id not in state or isinstance(state[law_id], dict) and "hash" in state[law_id]:
+        # 如果旧版结构存在，迁移为新版
+        state[law_id] = {}
+    state.setdefault(law_id, {})[url] = {"hash": current_hash, "text": text}
 
 
 def main():
-    global QUIET
     parser = argparse.ArgumentParser(description="HR 法律法规月度检查脚本")
     parser.add_argument("--notify", action="store_true", help="检测到更新时发送邮件通知")
     parser.add_argument(
@@ -210,7 +232,7 @@ def main():
     parser.add_argument("--quiet", action="store_true", help="安静模式，只输出摘要")
     args = parser.parse_args()
 
-    QUIET = args.quiet
+    quiet = args.quiet
     recipients = [r.strip() for r in args.recipients.split(",") if r.strip()]
 
     laws_data = load_json(LAWS_FILE)
@@ -223,30 +245,32 @@ def main():
     updated_laws = []
     error_laws = []
 
-    # 按 URL 去重：同一页面只抓取一次
-    url_to_laws = {}
+    # 按 URL（支持 ; 分隔的多个 URL）去重
+    url_to_entries = {}
     for law in laws_data.get("laws", []):
-        url = law.get("monitor_url") or law.get("url")
-        if not url:
-            continue
-        url_to_laws.setdefault(url, []).append(law)
+        raw_url = law.get("monitor_url") or law.get("url")
+        for url in split_urls(raw_url):
+            url_to_entries.setdefault(url, []).append(law)
+        law["last_checked"] = today
+        law["status"] = law.get("status") or "ok"
 
     url_results = {}
-    for url, laws in url_to_laws.items():
+    # 记录每部法规是否任一 URL 发生变化，用于最终状态
+    law_changed = {}
+
+    for url, laws in url_to_entries.items():
         names = "、".join(l["name"] for l in laws)
-        if QUIET:
+        if quiet:
             print(f"检查：{names}", end=" ")
         else:
             print(f"正在检查：{names} ...")
         text, ok = fetch_content(url)
-        for law in laws:
-            law["last_checked"] = today
 
         if not ok:
             for law in laws:
                 law["status"] = "error"
                 error_laws.append((law["name"], text[:200]))
-            if QUIET:
+            if quiet:
                 print("失败")
             else:
                 print(f"  检查失败：{text[:100]}")
@@ -255,18 +279,11 @@ def main():
         current_hash = content_hash(text)
         url_results[url] = current_hash
 
-        # 以该 URL 下任一 law_id 的上次快照作为基准
-        previous_hashes = [state.get(law.get("id"), {}).get("hash") for law in laws if law.get("id")]
-        has_previous = any(h is not None for h in previous_hashes)
-        previous_hash = previous_hashes[0] if has_previous else None
-        previous_texts = [state.get(law.get("id"), {}).get("text") for law in laws if law.get("id")]
-        previous_text = previous_texts[0] if any(t is not None for t in previous_texts) else ""
-
+        previous_hash, previous_text = get_previous(state, laws[0].get("id"), url)
         for law in laws:
             law_id = law.get("id")
             if law_id:
-                state.setdefault(law_id, {})["hash"] = current_hash
-                state.setdefault(law_id, {})["text"] = text
+                set_current(state, law_id, url, current_hash, text)
 
         if previous_hash and current_hash != previous_hash:
             change_summary = compute_change_summary(previous_text, text, url)
@@ -281,6 +298,7 @@ def main():
                 law["status"] = "updated"
                 law["last_changed"] = today
                 law["change_summary"] = grouped_summary
+                law_changed[law.get("id")] = True
 
             updated_laws.append({
                 "name": "、".join(affected_names),
@@ -296,20 +314,23 @@ def main():
                 "url": url,
                 "change_summary": grouped_summary,
             })
-            if QUIET:
+            if quiet:
                 print("更新")
             else:
                 print(f"  ⚠️ 检测到更新（影响 {len(laws)} 部法规）：{grouped_summary[:80]}...")
         else:
-            for law in laws:
-                if law.get("status") == "updated":
-                    law["status"] = "ok"
-                else:
-                    law["status"] = law.get("status") or "ok"
-            if QUIET:
+            if quiet:
                 print("无更新")
             else:
                 print(f"  无更新")
+
+    # 同一法规任一 URL 无变化则保持 ok
+    for law in laws_data.get("laws", []):
+        if law.get("id") not in law_changed:
+            if law.get("status") == "updated":
+                law["status"] = "ok"
+            else:
+                law["status"] = law.get("status") or "ok"
 
     laws_data["last_updated"] = today
     laws_data["check_schedule"] = "每月 1 日 09:00"
@@ -358,7 +379,7 @@ def main():
 
     print("\n" + "\n".join(summary_lines))
 
-    git_push_changes(f"hr-compliance: 月度法规检查 {today}")
+    git_push_changes(f"hr-compliance: 月度法规检查 {today}", quiet=quiet)
 
 
 if __name__ == "__main__":
