@@ -6,7 +6,7 @@
       "id": "law_002",
       "name": "中华人民共和国刑法（商业贿赂相关条款）",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "1997-10-01",
       "description": "反贿赂/反腐败",
       "url": "https://www.ccdi.gov.cn/fgk/law_display/1266",
       "source_url": "https://www.ccdi.gov.cn/fgk/law_display/1266",
@@ -20,13 +20,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "反爬/JS挑战，建议无头浏览器"
+      "monitor_note": "反爬/JS挑战，建议无头浏览器",
+      "latest_amendment_date": "2023-12-29",
+      "date_source": "NPC/ Wikipedia",
+      "date_note": "现行刑法1997年修订；2023-12-29第十二次修正"
     },
     {
       "id": "law_003",
       "name": "中华人民共和国反不正当竞争法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2025-10-15",
       "description": "反商业贿赂",
       "url": "http://www.npc.gov.cn/npc/c2/c30834/202506/t20250627_446247.html",
       "source_url": "http://www.npc.gov.cn/npc/c2/c30834/202506/t20250627_446247.html",
@@ -40,13 +43,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；与第13条共用页面"
+      "monitor_note": "服务端渲染，直接HTTP监控；与第13条共用页面",
+      "latest_amendment_date": "2025-06-27",
+      "date_source": "npc.gov.cn",
+      "date_note": "2025年6月27日第二次修订，2025-10-15施行"
     },
     {
       "id": "law_004",
       "name": "关于禁止商业贿赂行为的暂行规定",
       "issuer": "部门规章/规范性文件",
-      "effective_date": "现行有效",
+      "effective_date": "1996-11-15",
       "description": "反商业贿赂",
       "url": "https://www.gov.cn/zhengce/2021-06/25/content_5723653.htm",
       "source_url": "https://www.gov.cn/zhengce/2021-06/25/content_5723653.htm",
@@ -60,13 +66,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "",
+      "date_source": "gov.cn",
+      "date_note": "国家工商行政管理局令第60号"
     },
     {
       "id": "law_005",
       "name": "中华人民共和国公司法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2024-07-01",
       "description": "利益冲突/公司治理",
       "url": "http://www.npc.gov.cn/npc/c2/c30834/202312/t20231229_433999.html",
       "source_url": "http://www.npc.gov.cn/npc/c2/c30834/202312/t20231229_433999.html",
@@ -80,13 +89,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "2023-12-29",
+      "date_source": "npc.gov.cn",
+      "date_note": "2023年12月29日修订，2024-07-01施行"
     },
     {
       "id": "law_006",
       "name": "中华人民共和国劳动合同法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2008-01-01",
       "description": "劳动诚信/保密",
       "url": "http://www.npc.gov.cn/npc/c1773/c2518/c12898/201905/t20190523_46320.html",
       "source_url": "https://flk.npc.gov.cn/",
@@ -100,13 +112,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；与HR专项第19条共用同一法律"
+      "monitor_note": "服务端渲染，直接HTTP监控；与HR专项第19条共用同一法律",
+      "latest_amendment_date": "2012-12-28",
+      "date_source": "Wikipedia / NPC",
+      "date_note": "2007年6月29日通过；2012年12月28日修正"
     },
     {
       "id": "law_007",
       "name": "中华人民共和国会计法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2024-07-01",
       "description": "财务诚信/真实记录",
       "url": "http://www.npc.gov.cn/npc//c2/c30834/202406/t20240628_437897.html",
       "source_url": "http://www.npc.gov.cn/npc//c2/c30834/202406/t20240628_437897.html",
@@ -120,13 +135,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "2024-06-28",
+      "date_source": "npc.gov.cn / 推算",
+      "date_note": "2024年6月28日修订，2024-07-01施行"
     },
     {
       "id": "law_008",
       "name": "中华人民共和国审计法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2022-01-01",
       "description": "审计监督/内控",
       "url": "https://flk.npc.gov.cn/",
       "source_url": "https://flk.npc.gov.cn/",
@@ -140,13 +158,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API"
+      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API",
+      "latest_amendment_date": "2021-10-23",
+      "date_source": "Wikipedia / NPC",
+      "date_note": "2021年10月23日修订，2022-01-01施行"
     },
     {
       "id": "law_009",
       "name": "中华人民共和国个人信息保护法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2021-11-01",
       "description": "个人信息/隐私保护",
       "url": "http://www.npc.gov.cn/npc/c2/c30834/202108/t20210820_313088.html",
       "source_url": "http://www.npc.gov.cn/npc/c2/c30834/202108/t20210820_313088.html",
@@ -160,13 +181,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；与HR专项第34条共用同一法律"
+      "monitor_note": "服务端渲染，直接HTTP监控；与HR专项第34条共用同一法律",
+      "latest_amendment_date": "",
+      "date_source": "npc.gov.cn",
+      "date_note": "2021年8月20日通过，2021-11-01施行"
     },
     {
       "id": "law_010",
       "name": "中华人民共和国数据安全法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2021-09-01",
       "description": "数据安全",
       "url": "http://www.npc.gov.cn/npc/c2/c30834/202106/t20210610_311888.html",
       "source_url": "http://www.npc.gov.cn/npc/c2/c30834/202106/t20210610_311888.html",
@@ -180,13 +204,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "",
+      "date_source": "npc.gov.cn",
+      "date_note": "2021年6月10日通过，2021-09-01施行"
     },
     {
       "id": "law_011",
       "name": "中华人民共和国网络安全法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2026-01-01",
       "description": "网络安全",
       "url": "http://www.npc.gov.cn/zgrdw/npc/xinwen/2016-11/07/content_2001605.htm",
       "source_url": "http://www.npc.gov.cn/zgrdw/npc/xinwen/2016-11/07/content_2001605.htm",
@@ -200,13 +227,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "2025-10-28",
+      "date_source": "gov.cn / Wikipedia",
+      "date_note": "2025年10月28日修正，2026-01-01施行"
     },
     {
       "id": "law_012",
       "name": "中华人民共和国反垄断法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2022-08-01",
       "description": "公平竞争/反垄断",
       "url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_f0fae9eb3a684fc39e84d89eabfc2caa.html",
       "source_url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_f0fae9eb3a684fc39e84d89eabfc2caa.html",
@@ -220,13 +250,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "2022-06-24",
+      "date_source": "samr.gov.cn / NPC",
+      "date_note": "2022年6月24日修订，2022-08-01施行"
     },
     {
       "id": "law_013",
       "name": "中华人民共和国反不正当竞争法（商业秘密条款）",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2025-10-15",
       "description": "商业秘密/IP",
       "url": "http://www.npc.gov.cn/npc/c2/c30834/202506/t20250627_446247.html",
       "source_url": "http://www.npc.gov.cn/npc/c2/c30834/202506/t20250627_446247.html",
@@ -240,13 +273,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；与第3条共用页面"
+      "monitor_note": "服务端渲染，直接HTTP监控；与第3条共用页面",
+      "latest_amendment_date": "2025-06-27",
+      "date_source": "npc.gov.cn",
+      "date_note": "同law_003（商业秘密条款）"
     },
     {
       "id": "law_014",
       "name": "中华人民共和国著作权法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2021-06-01",
       "description": "知识产权/版权",
       "url": "https://www.gov.cn/guoqing/2021-10/29/content_5647633.htm",
       "source_url": "https://flk.npc.gov.cn/",
@@ -260,13 +296,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；原全国人大SPA页面已替换"
+      "monitor_note": "服务端渲染，直接HTTP监控；原全国人大SPA页面已替换",
+      "latest_amendment_date": "2020-11-11",
+      "date_source": "Wikipedia / NPC",
+      "date_note": "2020年11月11日修订，2021-06-01施行"
     },
     {
       "id": "law_015",
       "name": "中华人民共和国监察法、信访工作条例及相关举报制度",
       "issuer": "法律/行政法规",
-      "effective_date": "现行有效",
+      "effective_date": "2018-03-20",
       "description": "举报/举报人保护",
       "url": "https://flk.npc.gov.cn/",
       "source_url": "https://flk.npc.gov.cn/",
@@ -280,13 +319,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "全国人大法律数据库SPA，需无头浏览器；监察法/信访工作条例等建议分别确认详情页"
+      "monitor_note": "全国人大法律数据库SPA，需无头浏览器；监察法/信访工作条例等建议分别确认详情页",
+      "latest_amendment_date": "2024-12-25",
+      "date_source": "Wikipedia（待进一步确认）",
+      "date_note": "监察法；信访工作条例2022-05-01施行，本条为组合项，日期供参考"
     },
     {
       "id": "law_016",
       "name": "中华人民共和国出口管制法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2020-12-01",
       "description": "出口管制/贸易合规",
       "url": "http://www.npc.gov.cn/npc/c2/c30834/202010/t20201017_308277.html",
       "source_url": "http://www.npc.gov.cn/npc/c2/c30834/202010/t20201017_308277.html",
@@ -300,13 +342,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "",
+      "date_source": "npc.gov.cn",
+      "date_note": "2020年10月17日通过，2020-12-01施行"
     },
     {
       "id": "law_017",
       "name": "中华人民共和国反外国制裁法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2021-06-10",
       "description": "反制裁/涉外合规",
       "url": "https://flk.npc.gov.cn/",
       "source_url": "https://flk.npc.gov.cn/",
@@ -320,13 +365,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API"
+      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API",
+      "latest_amendment_date": "",
+      "date_source": "Wikipedia / NPC",
+      "date_note": "2021年6月10日通过并施行"
     },
     {
       "id": "law_018",
       "name": "中华人民共和国劳动法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "1995-01-01",
       "description": "劳动关系综合",
       "url": "https://flk.npc.gov.cn/",
       "source_url": "https://flk.npc.gov.cn/",
@@ -340,13 +388,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API"
+      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API",
+      "latest_amendment_date": "2018-12-29",
+      "date_source": "Wikipedia / NPC",
+      "date_note": "1994年7月5日通过；2018-12-29第二次修正"
     },
     {
       "id": "law_019",
       "name": "中华人民共和国劳动合同法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2008-01-01",
       "description": "劳动合同管理",
       "url": "http://www.npc.gov.cn/npc/c1773/c2518/c12898/201905/t20190523_46320.html",
       "source_url": "http://www.npc.gov.cn/npc/c1773/c2518/c12898/201905/t20190523_46320.html",
@@ -360,13 +411,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "2012-12-28",
+      "date_source": "Wikipedia / NPC",
+      "date_note": "同law_006"
     },
     {
       "id": "law_020",
       "name": "中华人民共和国劳动合同法实施条例",
       "issuer": "行政法规",
-      "effective_date": "现行有效",
+      "effective_date": "2008-09-18",
       "description": "劳动合同管理",
       "url": "https://www.gov.cn/zwgk/2008-09/19/content_1099470.htm",
       "source_url": "https://www.gov.cn/zhengce/content/2008-09/18/content_6559.htm",
@@ -380,13 +434,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；原Excel URL 404已替换"
+      "monitor_note": "服务端渲染，直接HTTP监控；原Excel URL 404已替换",
+      "latest_amendment_date": "",
+      "date_source": "gov.cn / Wikipedia",
+      "date_note": "国务院第535号令"
     },
     {
       "id": "law_021",
       "name": "中华人民共和国就业促进法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2008-01-01",
       "description": "招聘与平等就业",
       "url": "https://www.gov.cn/guoqing/2021-10/29/content_5647636.htm",
       "source_url": "https://flk.npc.gov.cn/",
@@ -400,13 +457,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；原全国人大SPA页面已替换"
+      "monitor_note": "服务端渲染，直接HTTP监控；原全国人大SPA页面已替换",
+      "latest_amendment_date": "2015-04-24",
+      "date_source": "Wikipedia / gov.cn",
+      "date_note": "2007年8月30日通过；2015年4月24日修正"
     },
     {
       "id": "law_022",
       "name": "中华人民共和国妇女权益保障法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2023-01-01",
       "description": "平等就业与女职工权益",
       "url": "https://www.gov.cn/guoqing/2021-10/29/content_5647634.htm",
       "source_url": "https://flk.npc.gov.cn/",
@@ -420,13 +480,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；原全国人大SPA页面已替换"
+      "monitor_note": "服务端渲染，直接HTTP监控；原全国人大SPA页面已替换",
+      "latest_amendment_date": "2022-10-30",
+      "date_source": "Wikipedia / NPC",
+      "date_note": "2022年10月30日修订，2023-01-01施行"
     },
     {
       "id": "law_023",
       "name": "女职工劳动保护特别规定",
       "issuer": "行政法规",
-      "effective_date": "现行有效",
+      "effective_date": "2012-04-28",
       "description": "女职工特殊保护",
       "url": "https://www.gov.cn/zhengce/2012-05/07/content_2602602.htm",
       "source_url": "https://www.gov.cn/zhengce/2012-05/07/content_2602602.htm",
@@ -440,13 +503,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "",
+      "date_source": "gov.cn",
+      "date_note": "国务院令第619号，2012-04-28公布施行"
     },
     {
       "id": "law_024",
       "name": "中华人民共和国社会保险法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2011-07-01",
       "description": "社会保险",
       "url": "https://www.gov.cn/guoqing/2021-10/29/content_5647616.htm",
       "source_url": "https://www.gov.cn/guoqing/2021-10/29/content_5647616.htm",
@@ -460,13 +526,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "2018-12-29",
+      "date_source": "gov.cn",
+      "date_note": "2018-12-29修正"
     },
     {
       "id": "law_025",
       "name": "工伤保险条例",
       "issuer": "行政法规",
-      "effective_date": "现行有效",
+      "effective_date": "2011-01-01",
       "description": "工伤管理",
       "url": "https://www.gov.cn/zwgk/2010-12/24/content_1772115.htm",
       "source_url": "https://www.gov.cn/zwgk/2010-12/24/content_1772115.htm",
@@ -480,13 +549,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "2010-12-20",
+      "date_source": "gov.cn",
+      "date_note": "2010年12月20日修订，2011-01-01施行"
     },
     {
       "id": "law_026",
       "name": "职工带薪年休假条例",
       "issuer": "行政法规",
-      "effective_date": "现行有效",
+      "effective_date": "2008-01-01",
       "description": "休息休假",
       "url": "https://www.gov.cn/zhengce/zhengceku/2008-03/28/content_6636.htm",
       "source_url": "https://flk.npc.gov.cn/detail?id=ff8080816f3e98bd016f420b9b460371&title=职工带薪年休假条例",
@@ -500,13 +572,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；原全国人大SPA详情页已替换"
+      "monitor_note": "服务端渲染，直接HTTP监控；原全国人大SPA详情页已替换",
+      "latest_amendment_date": "",
+      "date_source": "Wikipedia / gov.cn",
+      "date_note": "国务院令第514号"
     },
     {
       "id": "law_027",
       "name": "企业职工带薪年休假实施办法",
       "issuer": "部门规章",
-      "effective_date": "现行有效",
+      "effective_date": "2008-09-18",
       "description": "休息休假",
       "url": "https://www.moj.gov.cn/pub/sfbgw/flfggz/flfggzbmgz/200902/t20090209_144625.html",
       "source_url": "https://www.moj.gov.cn/pub/sfbgw/flfggz/flfggzbmgz/200902/t20090209_144625.html",
@@ -520,13 +595,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "",
+      "date_source": "Wikipedia / gov.cn",
+      "date_note": "人力资源和社会保障部令第1号"
     },
     {
       "id": "law_028",
       "name": "工资支付暂行规定",
       "issuer": "部门规范性文件",
-      "effective_date": "现行有效",
+      "effective_date": "1995-01-01",
       "description": "薪酬支付",
       "url": "https://www.gov.cn/zhengce/2022-08/31/content_5711284.htm",
       "source_url": "https://www.mohrss.gov.cn/",
@@ -540,13 +618,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；原人社部首页链接已替换"
+      "monitor_note": "服务端渲染，直接HTTP监控；原人社部首页链接已替换",
+      "latest_amendment_date": "",
+      "date_source": "Wikipedia / 劳部发",
+      "date_note": "劳部发〔1994〕489号"
     },
     {
       "id": "law_029",
       "name": "国务院关于职工工作时间的规定",
       "issuer": "行政法规",
-      "effective_date": "现行有效",
+      "effective_date": "1995-05-01",
       "description": "工时管理",
       "url": "https://www.beijing.gov.cn/zhengce/zfwj/zfwj/szfwj/201905/t20190523_71985.html",
       "source_url": "https://www.gov.cn/",
@@ -560,13 +641,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；原gov.cn首页已替换，待找到国务院政策库正式URL"
+      "monitor_note": "服务端渲染，直接HTTP监控；原gov.cn首页已替换，待找到国务院政策库正式URL",
+      "latest_amendment_date": "1995-03-25",
+      "date_source": "Wikipedia / gov.cn",
+      "date_note": "国务院令第174号，1995年3月25日修订"
     },
     {
       "id": "law_030",
       "name": "劳动部关于企业实行不定时工作制和综合计算工时工作制的审批办法",
       "issuer": "部门规范性文件",
-      "effective_date": "现行有效",
+      "effective_date": "1995-01-01",
       "description": "特殊工时",
       "url": "http://hrss.yn.gov.cn/NewsView.aspx?isZt=7&nid=63765&pid=971",
       "source_url": "https://www.mohrss.gov.cn/",
@@ -580,13 +664,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；国家层面原文无稳定公开页，使用省级人社厅转载"
+      "monitor_note": "服务端渲染，直接HTTP监控；国家层面原文无稳定公开页，使用省级人社厅转载",
+      "latest_amendment_date": "",
+      "date_source": "Wikipedia / 劳部发",
+      "date_note": "劳部发〔1994〕503号"
     },
     {
       "id": "law_031",
       "name": "企业职工患病或非因工负伤医疗期规定",
       "issuer": "部门规章",
-      "effective_date": "现行有效",
+      "effective_date": "1995-01-01",
       "description": "病假与医疗期",
       "url": "https://www.gov.cn/zhengce/2022-08/31/content_5711269.htm",
       "source_url": "https://www.mohrss.gov.cn/",
@@ -600,13 +687,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "",
+      "date_source": "Wikipedia / 劳部发",
+      "date_note": "劳部发〔1994〕479号"
     },
     {
       "id": "law_032",
       "name": "劳动争议调解仲裁法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2008-05-01",
       "description": "员工关系与争议处理",
       "url": "https://flk.npc.gov.cn/",
       "source_url": "https://flk.npc.gov.cn/",
@@ -620,13 +710,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API"
+      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API",
+      "latest_amendment_date": "",
+      "date_source": "Wikipedia / NPC",
+      "date_note": "2007年12月29日通过，2008-05-01施行"
     },
     {
       "id": "law_033",
       "name": "劳务派遣暂行规定",
       "issuer": "部门规章",
-      "effective_date": "现行有效",
+      "effective_date": "2014-03-01",
       "description": "劳务派遣",
       "url": "https://www.gov.cn/gongbao/content/2014/content_2667613.htm",
       "source_url": "https://www.gov.cn/gongbao/content/2014/content_2667613.htm",
@@ -640,13 +733,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "",
+      "date_source": "gov.cn",
+      "date_note": "人社部令第22号"
     },
     {
       "id": "law_034",
       "name": "中华人民共和国个人信息保护法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2021-11-01",
       "description": "员工个人信息保护",
       "url": "http://www.npc.gov.cn/npc/c2/c30834/202108/t20210820_313088.html",
       "source_url": "https://flk.npc.gov.cn/detail?id=ff8081817b6472a3017b656cc2040044&title=中华人民共和国个人信息保护法",
@@ -660,13 +756,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；与商业道德第9条共用同一法律"
+      "monitor_note": "服务端渲染，直接HTTP监控；与商业道德第9条共用同一法律",
+      "latest_amendment_date": "",
+      "date_source": "npc.gov.cn",
+      "date_note": "同law_009"
     },
     {
       "id": "law_035",
       "name": "中华人民共和国未成年人保护法及禁止使用童工规定",
       "issuer": "法律/行政法规",
-      "effective_date": "现行有效",
+      "effective_date": "2021-06-01",
       "description": "用工年龄",
       "url": "https://www.gov.cn/gongbao/content/2003/content_62261.htm",
       "source_url": "https://flk.npc.gov.cn/",
@@ -680,13 +779,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控；Excel将未成年人保护法与禁止使用童工规定合并，本URL覆盖禁止使用童工规定"
+      "monitor_note": "服务端渲染，直接HTTP监控；Excel将未成年人保护法与禁止使用童工规定合并，本URL覆盖禁止使用童工规定",
+      "latest_amendment_date": "2020-10-17",
+      "date_source": "Wikipedia / NPC",
+      "date_note": "未成年人保护法；禁止使用童工规定2002-12-01施行，本条为组合项"
     },
     {
       "id": "law_036",
       "name": "中华人民共和国职业病防治法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2018-12-29",
       "description": "职业健康",
       "url": "https://flk.npc.gov.cn/",
       "source_url": "https://flk.npc.gov.cn/",
@@ -700,13 +802,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API"
+      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API",
+      "latest_amendment_date": "2018-12-29",
+      "date_source": "Wikipedia / NPC",
+      "date_note": "2018-12-29第四次修正并施行"
     },
     {
       "id": "law_037",
       "name": "中华人民共和国安全生产法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2021-09-01",
       "description": "安全培训与任职资格",
       "url": "https://flk.npc.gov.cn/",
       "source_url": "https://flk.npc.gov.cn/",
@@ -720,13 +825,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API"
+      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API",
+      "latest_amendment_date": "2021-06-10",
+      "date_source": "gov.cn / Wikipedia",
+      "date_note": "2021年6月10日修订，2021-09-01施行"
     },
     {
       "id": "law_038",
       "name": "中华人民共和国工会法",
       "issuer": "法律",
-      "effective_date": "现行有效",
+      "effective_date": "2022-01-01",
       "description": "工会与民主程序",
       "url": "https://flk.npc.gov.cn/",
       "source_url": "https://flk.npc.gov.cn/",
@@ -740,13 +848,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API"
+      "monitor_note": "全国人大法律数据库SPA，需无头浏览器或API",
+      "latest_amendment_date": "2021-12-24",
+      "date_source": "Wikipedia / NPC",
+      "date_note": "2021年12月24日修订，2022-01-01施行"
     },
     {
       "id": "law_039",
       "name": "全国人大常委会关于实施渐进式延迟法定退休年龄的决定及配套办法",
       "issuer": "决定/政策",
-      "effective_date": "现行有效",
+      "effective_date": "2025-01-01",
       "description": "退休管理",
       "url": "https://www.gov.cn/yaowen/liebiao/202409/content_6974294.htm",
       "source_url": "https://www.gov.cn/yaowen/liebiao/202409/content_6974294.htm",
@@ -760,13 +871,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "",
+      "date_source": "gov.cn",
+      "date_note": "2024年9月13日通过，2025-01-01施行"
     },
     {
       "id": "law_040",
       "name": "地方人口与计划生育条例、工资支付规定、最低工资及社保缴费政策",
       "issuer": "地方性法规/政策",
-      "effective_date": "现行有效",
+      "effective_date": "待确认",
       "description": "地方差异事项",
       "url": "https://www.shanghai.gov.cn/nw12344/index.html;https://www.jiangsu.gov.cn/col/col84242/index.html",
       "source_url": "https://www.shanghai.gov.cn/; https://www.jiangsu.gov.cn/",
@@ -780,13 +894,16 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "Excel 原 URL 格式错误；分别监控上海市政府“政策法规”频道与江苏省政府“最新文件”频道，覆盖两地地方政策变化"
+      "monitor_note": "Excel 原 URL 格式错误；分别监控上海市政府“政策法规”频道与江苏省政府“最新文件”频道，覆盖两地地方政策变化",
+      "latest_amendment_date": "",
+      "date_source": "不适用",
+      "date_note": "地方性政策，无统一生效/修正日期"
     },
     {
       "id": "law_041",
       "name": "《超龄劳动者基本权益保障暂行规定》",
       "issuer": "部门规章",
-      "effective_date": "现行有效",
+      "effective_date": "2026-07-01",
       "description": "超龄劳动者权益保障",
       "url": "https://www.gov.cn/gongbao/2026/issue_12786/202606/content_7071610.html",
       "source_url": "https://www.gov.cn/gongbao/2026/issue_12786/202606/content_7071610.html",
@@ -800,7 +917,10 @@
       "last_checked": "2026-08-18",
       "last_changed": "",
       "change_summary": "",
-      "monitor_note": "服务端渲染，直接HTTP监控"
+      "monitor_note": "服务端渲染，直接HTTP监控",
+      "latest_amendment_date": "2026-04-08",
+      "date_source": "gov.cn",
+      "date_note": "2026年4月8日公布，2026-07-01施行"
     }
   ]
 }

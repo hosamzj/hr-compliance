@@ -380,7 +380,7 @@
                         <div class="law-card-header">
                             <div>
                                 <h3>${law.name}</h3>
-                                <div class="law-meta">${law.issuer || ''} · ${law.effective_date || '现行有效'}</div>
+                                <div class="law-meta">${law.issuer || ''} · 生效：${law.effective_date || '待确认'} · 最新修正：${law.latest_amendment_date || '无'}</div>
                             </div>
                             <span class="status-badge ${statusClass}">● ${statusText}</span>
                         </div>
