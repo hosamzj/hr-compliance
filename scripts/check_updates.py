@@ -343,6 +343,18 @@ def main():
         summary_lines.append("未检测到法规更新。")
         if error_laws:
             summary_lines.append(f"但有 {len(error_laws)} 个页面检查失败。")
+            if args.notify:
+                fail_subject = f"【HR 法规检查失败提醒】{today} {len(error_laws)} 个页面抓取失败"
+                fail_body = "\n".join([
+                    f"本次检查日期：{today}",
+                    f"以下 {len(error_laws)} 个页面未能成功抓取：",
+                    "",
+                ] + [f"• {name}\n  错误：{err[:200]}" for name, err in error_laws] + [
+                    "",
+                    "详细信息请查看日志或网站：",
+                    "https://hosamzj.github.io/hr-compliance/",
+                ])
+                send_email(fail_subject, fail_body, recipients)
 
     print("\n" + "\n".join(summary_lines))
 
