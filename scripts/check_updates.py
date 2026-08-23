@@ -25,6 +25,7 @@ import subprocess
 import sys
 import time
 import difflib
+import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -47,6 +48,14 @@ HEADERS = {
 
 DEFAULT_RECIPIENTS = ["sam.huo@te.com", "fiona.lu@te.com"]
 
+DOKOBOT_READERS = [
+    Path.home() / ".hermes" / "skills" / "dokobot-reader" / "scripts" / "dokobot-read.sh",
+    Path.home() / ".local" / "bin" / "dokobot",
+]
+
+DOKOBOT_SCREENS = int(os.environ.get("DOKOBOT_SCREENS", "3"))
+DOKOBOT_FALLBACK_MIN_LEN = int(os.environ.get("DOKOBOT_FALLBACK_MIN_LEN", "80"))
+
 
 def now_str() -> str:
     return datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d %H:%M:%S")
@@ -56,20 +65,103 @@ def date_str() -> str:
     return datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d")
 
 
-def fetch_content(url: str) -> tuple[str, bool]:
-    """抓取 URL 内容，返回（简化后文本，是否成功）"""
+def _strip_html(text: str) -> str:
+    """去除 HTML 标签、脚本、样式、空白，保留可读文本。"""
+    text = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"<style[^>]*>[\s\S]*?</style>", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"<[^>]+>", "", text)
+    text = re.sub(r"\s+", "", text)
+    return text
+
+
+def _needs_dokobot_fallback(text: str, ok: bool) -> bool:
+    """判断 HTTP 抓取结果是否需要 Dokobot 兜底。"""
+    if not ok:
+        return True
+    if len(text) < DOKOBOT_FALLBACK_MIN_LEN:
+        return True
+    # 全国人大法律库 SPA 首页陷阱：所有深链都返回同一标题
+    if "国家法律法规数据库" in text and len(text) < 200:
+        return True
+    # 云南人社等已失效页面
+    if text.strip() == "信息不存在。":
+        return True
+    return False
+
+
+def _find_dokobot_reader() -> Path | None:
+    """查找可用的 Dokobot 读取器（wrapper 脚本或 CLI）。"""
+    for candidate in DOKOBOT_READERS:
+        if candidate.exists():
+            # 如果是目录则跳过
+            if candidate.is_dir():
+                continue
+            return candidate
+    return None
+
+
+def fetch_dokobot(url: str, screens: int = DOKOBOT_SCREENS) -> tuple[str, bool]:
+    """使用 Dokobot 本地真实 Chrome 读取页面内容。"""
+    reader = _find_dokobot_reader()
+    if reader is None:
+        return "Dokobot 读取器未找到", False
+
+    cmd = [str(reader)]
+    # 如果调用的是 wrapper 脚本，它接受 screens 作为第二个参数
+    # 如果直接调用 dokobot CLI，则需要自己拼接参数
+    if reader.name == "dokobot-read.sh":
+        cmd.extend([url, str(screens)])
+    else:
+        cmd.extend(["read", "--local", "--screens", str(screens), url])
+
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=180,
+            check=False,
+        )
+        if result.returncode != 0:
+            err = result.stderr.strip() or result.stdout.strip()
+            return f"Dokobot 读取失败：{err[:200]}", False
+        text = result.stdout or ""
+        # Dokobot 输出是 markdown 风格，需要简化
+        text = _strip_html(text)
+        return text, True
+    except subprocess.TimeoutExpired:
+        return "Dokobot 读取超时（180s）", False
+    except Exception as e:
+        return f"Dokobot 异常：{e}", False
+
+
+def fetch_content(url: str, use_dokobot_first: bool = False) -> tuple[str, bool]:
+    """抓取 URL 内容，返回（简化后文本，是否成功）。HTTP 失败或结果过短时回退到 Dokobot。"""
+    if use_dokobot_first:
+        text, ok = fetch_dokobot(url)
+        if ok:
+            return text, True
+        return str(text), False
+
+    text, ok = _fetch_http(url)
+    if _needs_dokobot_fallback(text, ok):
+        fallback_text, fallback_ok = fetch_dokobot(url)
+        if fallback_ok:
+            return fallback_text, True
+        # 如果 Dokobot 也失败，返回 HTTP 的结果（哪怕是失败的）
+        return (text if ok else fallback_text), ok or fallback_ok
+    return text, ok
+
+
+def _fetch_http(url: str) -> tuple[str, bool]:
+    """HTTP 直接抓取。"""
     try:
         resp = requests.get(url, headers=HEADERS, timeout=30, allow_redirects=True)
         resp.raise_for_status()
         # 修正编码：requests 可能将中文页面误识别为 ISO-8859-1，优先按 UTF-8 解码
         if resp.encoding and resp.encoding.lower() in ("iso-8859-1", "latin-1"):
             resp.encoding = "utf-8"
-        text = resp.text
-        # 去除 HTML 标签、脚本、样式、空白，保留可读文本
-        text = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", text, flags=re.IGNORECASE)
-        text = re.sub(r"<style[^>]*>[\s\S]*?</style>", "", text, flags=re.IGNORECASE)
-        text = re.sub(r"<[^>]+>", "", text)
-        text = re.sub(r"\s+", "", text)
+        text = _strip_html(resp.text)
         return text, True
     except Exception as e:
         return str(e), False
@@ -230,9 +322,16 @@ def main():
         help="收件人邮箱，多个用逗号分隔",
     )
     parser.add_argument("--quiet", action="store_true", help="安静模式，只输出摘要")
+    parser.add_argument(
+        "--dokobot-first",
+        action="store_true",
+        dest="dokobot_first",
+        help="强制所有 URL 优先使用 Dokobot 读取（测试用）",
+    )
     args = parser.parse_args()
 
     quiet = args.quiet
+    dokobot_first = args.dokobot_first
     recipients = [r.strip() for r in args.recipients.split(",") if r.strip()]
 
     laws_data = load_json(LAWS_FILE)
@@ -266,7 +365,7 @@ def main():
             print(f"检查：{names}", end=" ")
         else:
             print(f"正在检查：{names} ...")
-        text, ok = fetch_content(url)
+        text, ok = fetch_content(url, use_dokobot_first=dokobot_first)
 
         if not ok:
             for law in laws:
