@@ -23,6 +23,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import time
 import difflib
 import shutil
@@ -153,6 +154,48 @@ def fetch_content(url: str, use_dokobot_first: bool = False) -> tuple[str, bool]
     return text, ok
 
 
+def _extract_pdf_text(resp: requests.Response) -> tuple[str, bool]:
+    """使用系统 pdftotext 工具提取 PDF 文本。"""
+    if shutil.which("pdftotext") is None:
+        return "pdftotext 未安装", False
+    try:
+        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
+            tmp.write(resp.content)
+            pdf_path = tmp.name
+        with tempfile.NamedTemporaryFile(suffix=".txt", delete=False, mode="w+", encoding="utf-8") as tmp_txt:
+            txt_path = tmp_txt.name
+        result = subprocess.run(
+            ["pdftotext", pdf_path, txt_path],
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=False,
+        )
+        os.unlink(pdf_path)
+        if result.returncode != 0:
+            os.unlink(txt_path)
+            return f"pdftotext 失败：{result.stderr[:200]}", False
+        with open(txt_path, "r", encoding="utf-8", errors="ignore") as f:
+            text = f.read()
+        os.unlink(txt_path)
+        text = re.sub(r"\s+", "", text)
+        return text, True
+    except Exception as e:
+        return f"PDF 解析异常：{e}", False
+
+
+def _is_pdf_response(resp: requests.Response, url: str) -> bool:
+    """判断响应是否为 PDF。"""
+    content_type = resp.headers.get("Content-Type", "").lower()
+    if "pdf" in content_type:
+        return True
+    if url.lower().endswith(".pdf"):
+        return True
+    if resp.content[:4] == b"%PDF":
+        return True
+    return False
+
+
 def _fetch_http(url: str) -> tuple[str, bool]:
     """HTTP 直接抓取。"""
     try:
@@ -161,6 +204,8 @@ def _fetch_http(url: str) -> tuple[str, bool]:
         # 修正编码：requests 可能将中文页面误识别为 ISO-8859-1，优先按 UTF-8 解码
         if resp.encoding and resp.encoding.lower() in ("iso-8859-1", "latin-1"):
             resp.encoding = "utf-8"
+        if _is_pdf_response(resp, url):
+            return _extract_pdf_text(resp)
         text = _strip_html(resp.text)
         return text, True
     except Exception as e:
