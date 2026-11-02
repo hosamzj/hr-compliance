@@ -294,11 +294,11 @@ def git_push_changes(message: str, quiet: bool = False):
             print("Git 操作失败：", e)
 
 
-def send_email(subject: str, body: str, recipients: list[str]):
-    """通过 Himalaya 发送邮件通知（支持多收件人）"""
+def send_email(subject: str, body: str, recipients: list[str]) -> bool:
+    """通过 Himalaya 发送邮件通知（支持多收件人）。返回是否发送成功。"""
     if not recipients:
         print("无收件人，跳过邮件通知")
-        return
+        return False
 
     to_args = []
     for addr in recipients:
@@ -324,12 +324,16 @@ Content-Type: text/plain; charset=utf-8
         )
         if result.returncode == 0:
             print(f"邮件已发送至 {', '.join(recipients)}")
+            return True
         else:
             print("邮件发送失败：", result.stderr)
+            return False
     except FileNotFoundError:
         print("Himalaya 未安装或配置，跳过邮件通知")
+        return False
     except Exception as e:
         print("邮件发送异常：", e)
+        return False
 
 
 def split_urls(raw_url: str) -> list[str]:
@@ -546,10 +550,15 @@ def main():
         if agg_changes or agg_errors:
             subject = f"【HR 法规月度汇总】{today} 自 {last_notify} 以来 {len(agg_changes)} 项变更 / {len(agg_errors)} 项失败"
             parts += ["详细信息请查看：", "https://hosamzj.github.io/hr-compliance/"]
-            send_email(subject, "\n".join(parts), recipients)
+            sent = send_email(subject, "\n".join(parts), recipients)
+            # 发送失败不推进聚合标记：下次 notify 运行会重试，避免变更被静默吞掉
+            if sent:
+                save_json(LAST_NOTIFY_FILE, {"date": today})
+            else:
+                print("邮件发送失败，聚合标记未推进，下次将重试。")
         else:
             print("自上次通知以来无变更，不发邮件。")
-        save_json(LAST_NOTIFY_FILE, {"date": today})
+            save_json(LAST_NOTIFY_FILE, {"date": today})
     else:
         if updated_laws:
             summary_lines.append("检测到变化，当前为静默模式（--notify 未开启），不发送邮件。")
