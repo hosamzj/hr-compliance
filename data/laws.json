@@ -1,6 +1,6 @@
 {
   "last_updated": "2026-11-02",
-  "check_schedule": "每月 1 日 09:00",
+  "check_schedule": "每周静默检查 + 每月 1 日 09:00 汇总通知",
   "laws": [
     {
       "id": "law_002",

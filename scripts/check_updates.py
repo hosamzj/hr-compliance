@@ -37,6 +37,7 @@ DATA_DIR = REPO_DIR / "data"
 LAWS_FILE = DATA_DIR / "laws.json"
 HISTORY_FILE = DATA_DIR / "history.json"
 STATE_FILE = DATA_DIR / "state.json"
+LAST_NOTIFY_FILE = DATA_DIR / "last_notify.json"
 
 HEADERS = {
     "User-Agent": (
@@ -417,6 +418,14 @@ def main():
                 law["status"] = "error"
                 error_laws.append((law["name"], text[:200]))
                 error_law_ids.add(law.get("id"))
+                history["events"].insert(0, {
+                    "date": today,
+                    "law_id": law.get("id", ""),
+                    "law_name": law["name"],
+                    "event": f"检查失败：{text[:150]}",
+                    "url": url,
+                    "event_type": "error",
+                })
             if quiet:
                 print("失败")
             else:
@@ -460,6 +469,7 @@ def main():
                 "event": grouped_summary,
                 "url": url,
                 "change_summary": grouped_summary,
+                "event_type": "change",
             })
             if quiet:
                 print("更新")
@@ -481,7 +491,7 @@ def main():
         law["status"] = "ok"
 
     laws_data["last_updated"] = today
-    laws_data["check_schedule"] = "每月 1 日 09:00"
+    laws_data["check_schedule"] = "每周静默检查 + 每月 1 日 09:00 汇总通知"
     save_json(LAWS_FILE, laws_data)
     save_json(STATE_FILE, state)
     save_json(HISTORY_FILE, history)
@@ -491,39 +501,60 @@ def main():
         summary_lines.append(f"检测到 {len(updated_laws)} 个页面变化，涉及法规：")
         for law in updated_laws:
             summary_lines.append(f"• {law['name']}（{law['category']}）")
-        subject = f"【HR 法规更新提醒】{today} 检测到 {len(updated_laws)} 个页面变化"
-        body = "\n".join([
-            f"本次检查日期：{today}",
-            "检测到以下法规页面发生变化：",
-            "",
-        ] + [
-            f"• {law['name']}（{law['category']}）\n  更新说明：{law.get('change_summary', '')}\n  官方来源：{law['url']}"
-            for law in updated_laws
-        ] + [
-            "",
-            "详细信息请查看：",
-            "https://hosamzj.github.io/hr-compliance/",
-        ])
-        if args.notify:
-            send_email(subject, body, recipients)
-        else:
-            summary_lines.append("检测到变化，因未开启 --notify，不发送邮件。")
     else:
-        summary_lines.append("未检测到法规更新。")
+        summary_lines.append("本次运行未检测到新的页面变化。")
+    if error_laws:
+        summary_lines.append(f"但有 {len(error_laws)} 个页面检查失败。")
+
+    if args.notify:
+        # 聚合模式：汇总自上次发通知以来的全部变更/失败事件（含每周静默检查记录的），
+        # 每月 1 日发一封汇总邮件。周检跑 silent 模式不触发这里的邮件。
+        last_notify = ""
+        if LAST_NOTIFY_FILE.exists():
+            last_notify = load_json(LAST_NOTIFY_FILE).get("date", "")
+        if not last_notify:
+            # 首次聚合：只看最近 31 天，避免把历史事件全量 dump 出来
+            from datetime import timedelta
+            cutoff = (datetime.now(timezone.utc).astimezone() - timedelta(days=31)).strftime("%Y-%m-%d")
+            last_notify = cutoff
+        agg_changes = {}  # law_id -> 最新事件（events 新在前，先命中即最新）
+        agg_errors = {}
+        for ev in history.get("events", []):
+            if ev.get("date", "") <= last_notify:
+                continue
+            lid = ev.get("law_id", "")
+            if ev.get("event_type") == "error":
+                agg_errors.setdefault(lid, ev)
+            else:
+                agg_changes.setdefault(lid, ev)
+
+        parts = [f"汇总区间：{last_notify} 至 {today}", ""]
+        if agg_changes:
+            parts.append(f"检测到 {len(agg_changes)} 项法规页面变化：")
+            parts.append("")
+            for lid, ev in agg_changes.items():
+                parts.append(f"• {ev.get('law_name','')}（首次记录：{ev.get('date','')}）")
+                parts.append(f"  更新说明：{ev.get('change_summary') or ev.get('event','')}")
+                parts.append(f"  官方来源：{ev.get('url','')}")
+                parts.append("")
+        if agg_errors:
+            parts.append(f"区间内有 {len(agg_errors)} 个页面出现过抓取失败：")
+            parts.append("")
+            for lid, ev in agg_errors.items():
+                parts.append(f"• {ev.get('law_name','')}（{ev.get('date','')}）{ev.get('event','')[:120]}")
+            parts.append("")
+        if agg_changes or agg_errors:
+            subject = f"【HR 法规月度汇总】{today} 自 {last_notify} 以来 {len(agg_changes)} 项变更 / {len(agg_errors)} 项失败"
+            parts += ["详细信息请查看：", "https://hosamzj.github.io/hr-compliance/"]
+            send_email(subject, "\n".join(parts), recipients)
+        else:
+            print("自上次通知以来无变更，不发邮件。")
+        save_json(LAST_NOTIFY_FILE, {"date": today})
+    else:
+        if updated_laws:
+            summary_lines.append("检测到变化，当前为静默模式（--notify 未开启），不发送邮件。")
         if error_laws:
-            summary_lines.append(f"但有 {len(error_laws)} 个页面检查失败。")
-            if args.notify:
-                fail_subject = f"【HR 法规检查失败提醒】{today} {len(error_laws)} 个页面抓取失败"
-                fail_body = "\n".join([
-                    f"本次检查日期：{today}",
-                    f"以下 {len(error_laws)} 个页面未能成功抓取：",
-                    "",
-                ] + [f"• {name}\n  错误：{err[:200]}" for name, err in error_laws] + [
-                    "",
-                    "详细信息请查看日志或网站：",
-                    "https://hosamzj.github.io/hr-compliance/",
-                ])
-                send_email(fail_subject, fail_body, recipients)
+            summary_lines.append("存在抓取失败，已记入 history.json（event_type=error）。")
 
     print("\n" + "\n".join(summary_lines))
 
