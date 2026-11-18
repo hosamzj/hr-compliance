@@ -1,6 +1,14 @@
 {
   "events": [
     {
+      "date": "2026-11-18",
+      "law_id": "law_036",
+      "law_name": "中华人民共和国职业病防治法",
+      "event": "检查失败：Dokobot 读取失败：No local bridge running.\n\nTo use --local mode:\n  1. Install the bridge: dokobot install-bridge\n  2. Open Chrome with the Dokobot extensio",
+      "url": "http://www.npc.gov.cn/npc/c2/c30834/201905/t20190521_296649.html",
+      "event_type": "error"
+    },
+    {
       "date": "2026-11-17",
       "law_id": "law_040",
       "law_name": "上海市人口与计划生育条例、工资支付规定、最低工资及社保缴费政策",
